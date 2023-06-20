@@ -15,14 +15,6 @@ app.use(express.json());
 //NB -> DO NOT DO IN PROD
 let refreshTokenStore = [];
 
-// //For Testing API Access
-// const posts = [{name: 'Kyle', posts: '1'}, {name: 'John', posts: '2'}]
-
-// //Use middleware to verify token before allowing access to API
-// app.get('/posts', authenticateToken, (req,res) =>{
-//     res.json(posts.filter(post => post.name === req.user.name));
-// });
-
 /**
  * login Logic
  * -> We recieve a login request from our client

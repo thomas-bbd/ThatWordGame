@@ -21,25 +21,6 @@ app.get('/posts', authenticateToken, (req,res) =>{
     res.json(posts.filter(post => post.name === req.user.name));
 });
 
-// /**
-//  * login Logic
-//  * -> We recieve a login request from our client
-//  * -> We validate username and password
-//  * -> We issue a token
-//  */
-
-// app.post('/login', (req,res)=>{
-//     //TO DO: Authenticate user using ARGON2
-//     const username = req.body.username;
-//     const password = req.body.password;
-//     //Payload to Serialize
-//     const user = {name: username};
-//     //Sign JWT
-//     const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN);
-//     res.json({token: accessToken});
-
-// });
-
 /**
  * Token Authentication Middleware
  * -> This function is called before the logic of our
