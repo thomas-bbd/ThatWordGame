@@ -8,6 +8,8 @@
 - Implement Auth Server
 - Implement user authentication using Argon2
 
+- Refactor the code to call '/token' when an access token expires
+
 
 
 //TO CREATE A CRYPTOGRAPHIC KEY FOR TOKEN GENERATION
