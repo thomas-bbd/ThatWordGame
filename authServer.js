@@ -35,7 +35,7 @@ app.post('/login', (req,res)=>{
     //Sign JWT
     const accessToken = generateAccessToken(userPayload);
     //Create associated refresh token
-    const refreshToken = jwt.sign(userPayload, process.env.REFRESH_TOKEN);
+    const refreshToken = jwt.sign(userPayload, process.env.REFRESH_TOKEN, {expiresIn : '60s'});
     //Push our refresh token to the db/store
     refreshTokenStore.push(refreshToken);
     res.json({token: accessToken, refreshToken: refreshToken});
@@ -73,40 +73,6 @@ app.delete('/logout', (req,res)=>{
     return res.sendStatus(204);
 })
 
-
-/**
- * Token Authentication Middleware
- * -> This function is called before the logic of our
- *    route is executed
- * 
- * -> It then calls 'next' to hand authentication back to the calling function
-*/
-
-// function authenticateToken(req,res,next){
-//     //Get Token from Auth Header from [BEARER Token]
-//     const authHeader = req.headers['authorization'];
-//     const token = authHeader && authHeader.split(' ')[1];
-    
-//     //Tell client that there is no token
-//     if(token == null){
-//         return res.sendStatus(401);
-//     }
-
-//     //Verify the token recieved against our secret
-//     jwt.verify(token, process.env.ACCESS_TOKEN, (err, user)=>{
-//         //In the event of a valid token sent a HTTP 403
-//         if(err) return res.sendStatus(403);
-
-//         /*
-//         If our token is valid, we set out user from the JWT 
-//         to a user parameter in the request and call next
-//         to hand control back to our calling route
-//         */
-
-//         req.user = user;
-//         next();
-//     });
-// }
 
 function generateAccessToken(user){
     return jwt.sign(user, process.env.ACCESS_TOKEN, {expiresIn: '30s'});
