@@ -11,6 +11,7 @@ app.get('/2', (req, res) => {
   });
 
 app.get('/test', (req, res) => {
-res.send('workflow endpoint.');
+res.send('please fucking work');
 });
+
 app.listen(3000, () => console.log('Example app is listening on port 3000.'));
