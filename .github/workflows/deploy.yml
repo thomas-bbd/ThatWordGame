@@ -32,6 +32,7 @@ jobs:
           git stash
           git pull origin main
           npm install
+          pm2 flush
           pm2 restart resource-server
               
     - name: Remove Github Actions IP from security group
