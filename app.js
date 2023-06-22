@@ -1,6 +1,7 @@
 import express from "express";
 
 const app = express();
+const PORT = process.env.PORT || 5000;
 
 app.get('/', (req, res) => {
     console.log('Endpoint / was hit')
@@ -17,4 +18,8 @@ app.get('/test', (req, res) => {
     res.send('please fucking work');
 });
 
-app.listen(3000, () => console.log('Example app is listening on port 3000.'));
+app.get('/pipeline', (req, res) => {
+res.send("Code pipeline is working!")
+});
+
+app.listen(PORT, () => console.log(`Example app is listening on port ${PORT}.`));
