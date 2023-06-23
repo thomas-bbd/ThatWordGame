@@ -20,6 +20,11 @@ app.use(express.json());
 //NB -> DO NOT DO IN PROD
 let refreshTokenStore = [];
 
+//Test Endpoint
+app.get('/test', (req,res)=>{
+    res.status(200).json({message:'Test endpoint hit successfully'});
+})
+
 /**
  * login Logic
  * -> We recieve a login request from our client
