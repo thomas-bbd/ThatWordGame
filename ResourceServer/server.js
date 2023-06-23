@@ -38,6 +38,7 @@ app.get('/3', (req, res) => {
 
 app.get('/db', (req, res) => {
     //NOTE: this should be handled in middleware, just an example
+    console.log('Hit the db endpoint')
     let db = testDb();
     db.then(x => {
         let results = x.map(row => {

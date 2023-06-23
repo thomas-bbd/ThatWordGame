@@ -21,6 +21,7 @@ const dbConfig = {
         trustServerCertificate: true
     }
 }
+console.log(`The dbConfig was ${dbConfig}`);
 
 const execSQLRequest = (sql, params) =>  
   new Promise((resolve, reject) => {
@@ -30,6 +31,7 @@ const execSQLRequest = (sql, params) =>
     const request = new Request(sql, (err, rowCount) => {
 
       if (err){
+        console.log('request rejection')
         DEBUG("DB Rejection:", {
             name: err.name,
             message: err.message || err,
@@ -59,6 +61,7 @@ const execSQLRequest = (sql, params) =>
   
     connection.on("connect", (err) => {
       if (err){
+        console.log('connection rejection')
         DEBUG("DB Connection rejection:", {
             name: err.name,
             message: err.message || err,
