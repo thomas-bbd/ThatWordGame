@@ -4,18 +4,38 @@ import bcrypt from 'bcrypt';
 import "dotenv/config.js";
 //require('dotenv').config();
 
+// const config = {
+//   user: process.env.DB_USER,
+//   password: process.env.DB_PWD,
+//   server: process.env.DATABASE_SERVER,
+//   database: process.env.DATABASE,
+//   options: {
+//     trustedConnection: true,
+//     enableArithAbort: true,
+//     trustServerCertificate: true
+//   },
+//   port: 53803
+// };
+
 const config = {
-  user: process.env.DB_USER,
-  password: process.env.DB_PWD,
-  server: process.env.DATABASE_SERVER,
-  database: process.env.DATABASE,
-  options: {
-    trustedConnection: true,
-    enableArithAbort: true,
-    trustServerCertificate: true
+  server: process.env.RDS_HOSTNAME,
+  authentication: {
+      type: "default",
+      options: {
+          userName: process.env.RDS_USERNAME,
+          password: process.env.RDS_PASSWORD
+      }
   },
-  port: 53803
-};
+  options: {
+      database: "ResourceServerDB",
+      encrypt: true,
+      port: parseInt(process.env.RDS_PORT),
+      trustServerCertificate: true
+  }
+}
+
+console.log(`The hostname was: ${process.env.RDS_HOSTNAME}, the port was: ${process.env.RDS_PORT}, the username was: ${process.env.RDS_USERNAME}, the password was: ${process.env.RDS_PASSWORD}`);
+
 
 async function FetchUsers() {
   try{
