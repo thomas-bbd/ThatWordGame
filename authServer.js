@@ -11,7 +11,6 @@ import bcrypt from 'bcrypt';
 const app = express();
 const port = process.env.PORT || 4000;
 import "dotenv/config.js";
-import e from 'express';
 //require('dotenv').config();
 
 //Allow us to read body requests as JSON
