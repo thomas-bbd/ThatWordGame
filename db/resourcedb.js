@@ -21,7 +21,7 @@ const dbConfig = {
         trustServerCertificate: true
     }
 }
-console.log(`The dbConfig was ${dbConfig}`);
+console.log(`The hostname was: ${process.env.RDS_HOSTNAME}, the port was: ${process.env.RDS_PORT}, the username was: ${process.env.RDS_USERNAME}, the password was: ${process.env.RDS_PASSWORD}`);
 
 const execSQLRequest = (sql, params) =>  
   new Promise((resolve, reject) => {
