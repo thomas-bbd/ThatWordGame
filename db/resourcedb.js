@@ -61,7 +61,7 @@ const execSQLRequest = (sql, params) =>
   
     connection.on("connect", (err) => {
       if (err){
-        console.log('connection rejection')
+        console.log(`connection rejection. Name: ${err.name}. Message ${err.message || err}. Error object: ${err}`);
         DEBUG("DB Connection rejection:", {
             name: err.name,
             message: err.message || err,
