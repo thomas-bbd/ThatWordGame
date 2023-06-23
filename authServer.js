@@ -1,12 +1,18 @@
 /**
  * This server only handles user authentication
  */
-
-const express = require('express');
-const jwt = require('jsonwebtoken');
+import { InsertUser, FetchUsers, GetUserByUsernameEmail} from './databaseAccess.js';
+import express from 'express';
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
+// const express = require('express');
+// const bcrypt = require('bcrypt');
+// const jwt = require('jsonwebtoken');
 const app = express();
 const port = process.env.PORT || 4000;
-require('dotenv').config();
+import "dotenv/config.js";
+import e from 'express';
+//require('dotenv').config();
 
 //Allow us to read body requests as JSON
 app.use(express.json()); 
@@ -26,20 +32,46 @@ let refreshTokenStore = [];
  * -> We invalidate our refresh token on logout so that it cannot be used to grant access
  */
 
-app.post('/login', (req,res)=>{
+app.post('/login', async (req,res)=>{
     //TO DO: Authenticate user using ARGON2
     const username = req.body.username;
+    const email = req.body.email;
     const password = req.body.password;
-    //Payload to Serialize
-    const userPayload = {name: username};
-    //Sign JWT
-    const accessToken = generateAccessToken(userPayload);
-    //Create associated refresh token
-    const refreshToken = jwt.sign(userPayload, process.env.REFRESH_TOKEN, {expiresIn : '60s'});
-    //Push our refresh token to the db/store
-    refreshTokenStore.push(refreshToken);
-    res.json({token: accessToken, refreshToken: refreshToken});
+    console.log(username, email, password);
+    if(username && password && email){
+        if(await VerifyLogin(username,email,password)){
+            console.log(`Login Success for ${username}`);
+            //Payload to Serialize
+            const userPayload = {name: username};
+            //Sign JWT
+            const accessToken = generateAccessToken(userPayload);
+            //Create associated refresh token
+            const refreshToken = jwt.sign(userPayload, process.env.REFRESH_TOKEN, {expiresIn : '60s'});
+            //Push our refresh token to the db/store
+            refreshTokenStore.push(refreshToken);
+            res.json({token: accessToken, refreshToken: refreshToken});
+        }else{
+            res.status(401).json({error:'Login Failed'});
+        }
+    }
+});
 
+/**
+ *  User Registration 
+ */
+
+app.post('/register', async (req,res)=>{
+    let username = req.body.username;
+    let password = req.body.password;
+    let email = req.body.email;
+    let db_user = await GetUserByUsernameEmail(username, email);
+    console.log(db_user);
+    if(db_user.length === 0){
+        await InsertUser(username,password,email);
+        res.sendStatus(200);
+    }else{
+        res.status(401).json({error:'User Already Exists'}).send();
+    }
 });
 
 /**
@@ -78,6 +110,23 @@ function generateAccessToken(user){
     return jwt.sign(user, process.env.ACCESS_TOKEN, {expiresIn: '30s'});
 }
 
+
+async function VerifyLogin(username, email, password){
+    let result = await GetUserByUsernameEmail(username, email);
+    console.log(result);
+    if(result.length !== 0){
+        try{
+            let db_password = result[0].password;
+            if(await bcrypt.compare(password, db_password)){
+                return true;
+            }
+        }catch(error){
+            return error;
+        }
+    }
+
+    return false;
+}
 
 app.listen(port, ()=>{
     console.log(`Listening on localhost:${port}`);
