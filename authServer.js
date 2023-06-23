@@ -10,8 +10,9 @@ import bcrypt from 'bcrypt';
 // const jwt = require('jsonwebtoken');
 const app = express();
 const port = process.env.PORT || 5000;
-import "dotenv/config.js";
-//require('dotenv').config();
+import { config } from "dotenv";
+
+config();
 
 //Allow us to read body requests as JSON
 app.use(express.json()); 
@@ -19,6 +20,10 @@ app.use(express.json());
 //Refresh Token Storage for Testing
 //NB -> DO NOT DO IN PROD
 let refreshTokenStore = [];
+
+app.get('/', (req, res) => {
+    res.send('Home endpoint');
+});
 
 //Test Endpoint
 app.get('/test', (req,res)=>{

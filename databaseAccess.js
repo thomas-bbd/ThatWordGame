@@ -1,8 +1,9 @@
 //const sql = require('mssql');
 import sql from 'mssql';
 import bcrypt from 'bcrypt';
-import "dotenv/config.js";
-//require('dotenv').config();
+import { config } from "dotenv";
+
+config();
 
 // const config = {
 //   user: process.env.DB_USER,
@@ -17,7 +18,20 @@ import "dotenv/config.js";
 //   port: 53803
 // };
 
-const config = {
+// const sqlconfig = {
+//   userName: process.env.RDS_USERNAME,
+//   password: process.env.RDS_PASSWORD,
+//   server: process.env.RDS_HOSTNAME,
+//   database: process.env.DATABASE,
+//   options: {
+//     trustedConnection: true,
+//     enableArithAbort: true,
+//     trustServerCertificate: true
+//   },
+//   port: 53803
+// };
+
+const sqlconfig = {
   server: process.env.RDS_HOSTNAME,
   authentication: {
       type: "default",
@@ -39,7 +53,7 @@ console.log(`The hostname was: ${process.env.RDS_HOSTNAME}, the port was: ${proc
 
 async function FetchUsers() {
   try{
-    let pool = await sql.connect(config);
+    let pool = await sql.connect(sqlconfig);
     console.log('server is connected...');
     const query = 'SELECT * FROM dbo.USERS';
     let request = await pool.request().query(query);
@@ -52,7 +66,7 @@ async function FetchUsers() {
 async function InsertUser(username, password, email){
   const hashedPassword =  await EncryptPassword(password);
   try{
-    let pool = await sql.connect(config);
+    let pool = await sql.connect(sqlconfig);
     let result = await pool.request()
     .input('username', sql.VarChar, username)
     .input('password', sql.VarChar,hashedPassword)
@@ -66,7 +80,7 @@ async function InsertUser(username, password, email){
 
 async function GetUserByUsernameEmail(username, email){
   try {
-      let pool = await sql.connect(config);
+      let pool = await sql.connect(sqlconfig);
       let result = await pool
           .request()
           .input('username', sql.VarChar, username)
