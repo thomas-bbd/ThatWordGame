@@ -1,0 +1,40 @@
+//TO DO
+- Create Identity Server DB
+    - User details Table
+    - Table for refresh tokens
+
+- Create registration process
+
+- Implement Auth Server
+- Implement user authentication using Argon2
+
+- Refactor the code to call '/token' when an access token expires
+
+
+
+//TO CREATE A CRYPTOGRAPHIC KEY FOR TOKEN GENERATION
+1. Open up a terminal e.g. Bash
+2. Type Node and hit Enter
+3. run this command 'require('crypto').randomBytes(64).toString('hex')'
+
+
+//How does this server work?
+
+We have 2 servers: AuthServer and our normal server
+Our auth server handles login and issuing of tokens, as well as refreshing tokens
+Our 'normal' server has an api call that uses middleware to authenticate tokens before returning any data
+
+When we login
+- Our user information is verified
+- we issue a token
+- the client stores it
+
+When a client makes a request
+- The token is accessed from the authorizatio header by the middleware
+- It is verified and resources returned
+
+If a token expires
+- We use the refresh token to generate a new access token so that the user does not need to login again
+
+If a user logs out
+- All tokens (refresh and access) are invalidated

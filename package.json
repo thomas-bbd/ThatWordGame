@@ -7,6 +7,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ResourceServer/server"
+    "devStart": "nodemon server.js",
+    "devStartAuth": "nodemon authServer.js"
   },
   "repository": {
     "type": "git",
@@ -19,11 +21,18 @@
   },
   "homepage": "https://github.com/thomas-bbd/ThatWordGame#readme",
   "dependencies": {
+    "bcrypt": "^5.1.0",
+    "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "mssql": "^9.1.1",
     "dotenv": "^8.6.0",
     "ws": "^8.13.0",
     "debug": "~2.6.9",
     "morgan": "~1.9.1"
+    "jsonwebtoken": "^9.0.0",
+    "mssql": "^9.1.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
   }
 }
