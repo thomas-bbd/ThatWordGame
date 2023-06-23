@@ -52,6 +52,7 @@ app.get('/db', (req, res) => {
         });
         res.send(`db test: ${results[0]['description']}`);
     })
+});
 
 const wss = new WebSocketServer({server: server})
 
