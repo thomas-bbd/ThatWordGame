@@ -1,25 +1,13 @@
 import express from "express";
+import { config } from "dotenv";
+import logger from "morgan";
 
+
+config();
 const app = express();
-const PORT = process.env.PORT || 5000;
+app.use(express.json());
+if (["development", "production"].includes(process.env.NODE_ENV)) {
+    app.use(logger("dev"));
+  }
 
-app.get('/', (req, res) => {
-    console.log('Endpoint / was hit')
-    res.send('Successful response.');
-});
-
-app.get('/2', (req, res) => {
-    console.log('Endpoint /2 was hit')
-    res.send('2nd endpoint.');
-});
-
-app.get('/test', (req, res) => {
-    console.log('Endpoint /test was hit')
-    res.send('please fucking work');
-});
-
-app.get('/pipeline', (req, res) => {
-res.send("Code pipeline is working!")
-});
-
-app.listen(PORT, () => console.log(`Example app is listening on port ${PORT}.`));
+export default app;
