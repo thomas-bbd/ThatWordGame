@@ -41,7 +41,7 @@ const sqlconfig = {
       }
   },
   options: {
-      database: "ResourceServerDB",
+      database: process.env.DATABASE,
       encrypt: true,
       port: parseInt(process.env.RDS_PORT),
       trustServerCertificate: true
