@@ -1,61 +1,33 @@
-import { json } from 'express'
-import { WebSocket } from 'ws' 
+import { ClientPlayer, STATE } from "./player_state_machine.js";
 
-const player1socket = new WebSocket('ws://localhost:8081')
-let player1_id;
-let game_id;
-const player2socket = new WebSocket('ws://localhost:8081')
-let player2_id;
+const player1 = new ClientPlayer("bob")
+const player2 = new ClientPlayer("steve")
 
-// player 1 creates the game.
+await new Promise(resolve => setTimeout(resolve, 1000))
 
-await new Promise(resolve => setTimeout(resolve, 100))
+player1.create_game()
 
-player1socket.send(JSON.stringify({
-  action: 'init-game',
-  player_name: 'player1'
-}))
+await new Promise(resolve => setTimeout(resolve, 1000))
 
+player2.join_game(player1.game_id)
 
-// player 1 receives the game_id and shows it to player2
+await new Promise(resolve => setTimeout(resolve, 1000))
 
-player1socket.onmessage = async event => {
-  let message = JSON.parse(event.data)
-  player1_id = message.player_id
-  game_id = message.game_id
-  console.log(message)
-  player1socket.onmessage = async event => {
-    let message = JSON.parse(event.data)
-    console.log(message)
-  }
+player1.start_game()
+
+await new Promise(resolve => setTimeout(resolve, 1000))
+
+let player_list = [player1, player2]
+
+let wordlist = 'this sentence probably won\'t make any logical sense at all because these agents are choosing words at random'.split(' ')
+
+for (let i = 0; i < 10; i++) {
+    player_list.forEach( player =>  {
+        if (player.is(STATE.MY_TURN)){
+            const word = wordlist[Math.floor(Math.random() * wordlist.length)]
+            player.play(word)
+        }
+    })
+
+    await new Promise(resolve => setTimeout(resolve, 2000))
 }
-
-await new Promise(resolve => setTimeout(resolve, 100))
-
-// player 2 joins player 1's game
-
-player2socket.send(
-  JSON.stringify({
-    action: 'join-game',
-    player_name: 'player2',
-    game_id: game_id
-  })
-)
-
-// both players notified
-
-player1socket.onmessage = async event => {
-  let message = JSON.parse(event.data)
-  console.log('player 1:')
-  console.log(message)
-}
-
-player2socket.onmessage = async event => {
-  let message = JSON.parse(event.data)
-  console.log('player 2:')
-  console.log(message)
-}
-
-await new Promise(resolve => setTimeout(resolve, 100))
-
-// player 1 starts the game

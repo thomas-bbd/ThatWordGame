@@ -1,7 +1,7 @@
 import express from "express";
 import http from 'http'
 import { WebSocketServer } from "ws";
-import { initiate_game, join_game } from "./game-manager.js";
+import { initiate_game, join_game, play_word, start_game } from "./game-manager.js";
 
 const PORT = process.env.PORT || 8081;
 const app = express();
@@ -25,9 +25,13 @@ const handle_message = (message, websocket) => {
       break;
     case 'join-game': 
       join_game(message.game_id, message.player_name, websocket)
-    break;
-    case 'start-game': break;
-    case 'play-word': break;
+      break;
+    case 'start-game': 
+      start_game(message.game_id, message.player_id, websocket)
+      break;
+    case 'play-word': 
+      play_word(message.word, message.game_id, message.player_id, websocket)
+      break;
     default: break;
   }
 }
