@@ -4,17 +4,20 @@
  * which handles login and token management
  */
 
-const express = require('express');
-const jwt = require('jsonwebtoken');
+// const express = require('express');
+// const jwt = require('jsonwebtoken');
+import express from 'express';
+import jwt from 'jsonwebtoken';
 const app = express();
 const port = process.env.PORT || 8080;
-require('dotenv').config();
+
+import "dotenv/config.js";
 
 //Allow us to read body requests as JSON
 app.use(express.json()); 
 
 //For Testing API Access
-const posts = [{name: 'Kyle', posts: '1'}, {name: 'John', posts: '2'}]
+const posts = [{name: 'Kyle', posts: '1'}, {name: 'John', posts: '2'}, {name:'Mikhail', posts: '3'}]
 
 //Use middleware to verify token before allowing access to API
 app.get('/posts', authenticateToken, (req,res) =>{
