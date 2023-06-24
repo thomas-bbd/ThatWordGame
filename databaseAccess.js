@@ -41,7 +41,7 @@ const sqlconfig = {
       }
   },
   options: {
-      database: process.env.DATABASE,
+      database: "IdentityDB",
       encrypt: true,
       port: parseInt(process.env.RDS_PORT),
       trustServerCertificate: true
@@ -103,9 +103,6 @@ async function EncryptPassword(password) {
       throw error;
   }
 }
-
-console.log(FetchUsers());
-
 
 
 export {FetchUsers, InsertUser, GetUserByUsernameEmail};
