@@ -31,7 +31,7 @@ const execSQLRequest = (sql, params) =>
     const request = new Request(sql, (err, rowCount) => {
 
       if (err){
-        console.log('request rejection')
+        console.log(`request rejection. Name: ${err.name}. Message ${err.message || err}. Error object: ${err}`);
         DEBUG("DB Rejection:", {
             name: err.name,
             message: err.message || err,
