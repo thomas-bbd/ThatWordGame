@@ -10,12 +10,13 @@ import csrf from "csurf";
 import path from "path";
 import { fileURLToPath } from 'url';
 import { ensureLoggedIn } from "connect-ensure-login";
+import mkdirp from "mkdirp";
 
 import authRouter from "./routes/auth.route.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-console.log(`filename: ${__filename}, dirname: ${__dirname}`);
+mkdirp.sync('./var/db');
 config();
 const app = express();
 
