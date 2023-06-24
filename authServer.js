@@ -46,8 +46,8 @@ app.post('/login', async (req,res)=>{
     const username = req.body.username;
     const email = req.body.email;
     const password = req.body.password;
-    console.log(username, email, password);
-    if(username && password && email){
+    const loginCredentialsValid = validateLoginInput(username,email,password);
+    if(loginCredentialsValid.value){
         if(await VerifyLogin(username,email,password)){
             console.log(`Login Success for ${username}`);
             //Payload to Serialize
@@ -62,6 +62,8 @@ app.post('/login', async (req,res)=>{
         }else{
             res.status(401).json({error:'Login Failed'});
         }
+    }else{
+        res.status(400).json({error: `Missing Input - ${loginCredentialsValid.param}`});
     }
 });
 
@@ -74,7 +76,6 @@ app.post('/register', async (req,res)=>{
     let password = req.body.password;
     let email = req.body.email;
     let db_user = await GetUserByUsernameEmail(username, email);
-    console.log(db_user);
     if(db_user.length === 0){
         await InsertUser(username,password,email);
         res.sendStatus(200);
@@ -114,6 +115,22 @@ app.delete('/logout', (req,res)=>{
     return res.sendStatus(204);
 })
 
+function validateLoginInput(username,email,password){
+    if(username == null || username == undefined || username.length === 0){
+        return {param: 'username', value: false, message:'No Username Provided!'};
+    }else if(email == null || email == undefined || email.length === 0){
+        return {param: 'email', value: false, message:'No Email Provided!'};
+    }else if(password == null || password == undefined || password.length === 0){
+        return {param: 'password', value: false, message:'No Password Provided!'};
+    }
+
+    if(!(email.includes('@'))){
+        return {param: 'email', value: false, message:'Incorrect Email Format!'};
+    }
+
+    return {param: 'login', value:true, message:'Login Input Valid'};
+}
+
 
 function generateAccessToken(user){
     return jwt.sign(user, process.env.ACCESS_TOKEN, {expiresIn: '30s'});
@@ -126,6 +143,7 @@ async function VerifyLogin(username, email, password){
     if(result.length !== 0){
         try{
             let db_password = result[0].password;
+            console.log(db_password);
             if(await bcrypt.compare(password, db_password)){
                 return true;
             }
