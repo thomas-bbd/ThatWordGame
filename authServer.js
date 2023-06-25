@@ -24,9 +24,13 @@ let refreshTokenStore = [];
 // Add headers before the routes are defined
 app.use(function (req, res, next) {
     // Website you wish to allow to connect
-    res.setHeader('Access-Control-Allow-Origin', 'http://127.0.0.1:5501');
-    res.setHeader('Access-Control-Allow-Origin', 'http://127.0.0.1:5000');
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5000');
+    const allowedOrigins = ['http://127.0.0.1:5501', 'http://127.0.0.1:5000', 'http://127.0.0.1:5000', 'http://localhost:5000'];
+    const origin = req.headers.origin;
+    if (allowedOrigins.includes(origin)) {
+        res.setHeader('Access-Control-Allow-Origin', origin);
+    } else {
+        console.log(`Denied request due to CORS policy from ${orogin}`);
+    }
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     next();
