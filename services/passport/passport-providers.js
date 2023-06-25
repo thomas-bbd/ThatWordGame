@@ -1,7 +1,7 @@
 import passport from "passport";
 import GoogleStrategy from "passport-google-oidc";
 import { userDBVerification } from "./passport-db.js";
-
+import GitHubStrategy from "passport-github2";
 
 passport.use(
     "google",
@@ -11,6 +11,17 @@ passport.use(
     callbackURL: '/auth/oauth2/redirect/google',
     scope: [ 'profile' ]
   }, userDBVerification));
+
+  passport.use(
+    "github",
+    new GitHubStrategy({
+    clientID: process.env['GITHUB_CLIENT_ID'],
+    clientSecret: process.env['GITHUB_CLIENT_SECRET'],
+    callbackURL: '/auth/oauth2/redirect/github',
+    scope: [ 'profile' ]
+  }, function(accessToken, refreshToken, profile, done) {
+    return done(null, profile);
+    }));
 
   passport.serializeUser(function(user, cb) {
     process.nextTick(function() {
