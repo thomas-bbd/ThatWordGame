@@ -40,7 +40,7 @@ async function login() {
         password: password
     };
 
-    const response = fetch("https://id.tomsportfolio.co.za/login", {
+    const response = await fetch("https://id.tomsportfolio.co.za/login", {
         method: "POST", // *GET, POST, PUT, DELETE, etc.
         // mode: "no-cors", // no-cors, *cors, same-origin
         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -51,16 +51,6 @@ async function login() {
         body: JSON.stringify(body), // body data type must match "Content-Type" header
       });
 
-    response.then(x => {
-        let y = x.json();
-        y.then(z => {
-            console.log(z);
-            console.log();
-        });
-    }).catch(e => {
-        console.log(e);
-    })
-
     let result = await response.json();
     console.log(result);
     if (response.status == 401) {
@@ -68,10 +58,11 @@ async function login() {
         errorField.style.display = "block";
     } else if (response.status == 400) {
         errorField.style.display = "block";
+        errorField.hidden = false;
         errorField.innerHtml = "Fill in all fields"; //should be checked before sending anyways
     } else if (response.ok) {
         errorField.style.display = "none";
-        window.location = `/auth/login/federated/idserver?user=${username}&email=${email}&token=${result.body.token}`;
+        window.location = `/auth/login/federated/idserver?user=${username}&email=${email}&token=${result.token}`;
     }
 }
 
