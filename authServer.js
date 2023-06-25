@@ -20,14 +20,17 @@ app.use(express.json());
 //Refresh Token Storage for Testing
 //NB -> DO NOT DO IN PROD
 let refreshTokenStore = [];
+let accessTokenStore = []; // need to be able to validate access tokens
 
 // Add headers before the routes are defined
 app.use(function (req, res, next) {
     // Website you wish to allow to connect
-    const allowedOrigins = ['http://127.0.0.1:5501', 'http://127.0.0.1:5000', 'http://127.0.0.1:5000', 'http://localhost:5000'];
+    const allowedOrigins = ['http://127.0.0.1:5501', 'http://127.0.0.1:5000', 'http://127.0.0.1:5000', 'http://localhost:5000', undefined]; //todo no
     const origin = req.headers.origin;
     if (allowedOrigins.includes(origin)) {
-        res.setHeader('Access-Control-Allow-Origin', origin);
+        if (origin != undefined) { //todo remove
+            res.setHeader('Access-Control-Allow-Origin', origin);
+        }
     } else {
         console.log(`Denied request due to CORS policy from ${origin}`);
     }
@@ -69,6 +72,7 @@ app.post('/login', async (req,res)=>{
             const userPayload = {name: username};
             //Sign JWT
             const accessToken = generateAccessToken(userPayload);
+            accessTokenStore.push(accessToken);
             //Create associated refresh token
             const refreshToken = jwt.sign(userPayload, process.env.REFRESH_TOKEN, {expiresIn : '60s'});
             //Push our refresh token to the db/store
@@ -116,6 +120,21 @@ app.post('/token', (req,res)=>{
         if(err) return res.sendStatus(403);
         const accessToken = generateAccessToken({name: user.name});
         res.json({accessToken: accessToken});
+    })
+})
+
+/**
+ * Checks the validity of a token
+ */
+app.get('/valid', (req, res) => {
+    const token = req.body.token;
+    if(token == null) return res.sendStatus(401);
+    //We should check in DB for token
+    if(!accessTokenStore.includes(token)) return res.sendStatus(403);
+
+    jwt.verify(token, process.env.ACCESS_TOKEN, (err,user)=>{
+        if(err) return res.sendStatus(403);
+        res.sendStatus(200);
     })
 })
 
