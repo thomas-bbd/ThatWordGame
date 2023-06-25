@@ -27,6 +27,7 @@ document.getElementById("github-btn").addEventListener("click", function (event)
 
 loginButton.addEventListener("click", (e) => {
     e.preventDefault();
+    disableAllInputs();
     login();
 });
 
@@ -42,7 +43,6 @@ async function login() {
 
     const response = await fetch("https://id.tomsportfolio.co.za/login", {
         method: "POST", // *GET, POST, PUT, DELETE, etc.
-        // mode: "no-cors", // no-cors, *cors, same-origin
         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
         headers: {
           "Content-Type": "application/json",
@@ -54,9 +54,11 @@ async function login() {
     let result = await response.json();
     console.log(result);
     if (response.status == 401) {
+        enableAllInputs();
         errorField.innerHtml = "Invalid credentials. Login Failed";
         errorField.style.display = "block";
     } else if (response.status == 400) {
+        enableAllInputs();
         errorField.style.display = "block";
         errorField.hidden = false;
         errorField.innerHtml = "Fill in all fields"; //should be checked before sending anyways
