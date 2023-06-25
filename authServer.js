@@ -25,12 +25,10 @@ let accessTokenStore = []; // need to be able to validate access tokens
 // Add headers before the routes are defined
 app.use(function (req, res, next) {
     // Website you wish to allow to connect
-    const allowedOrigins = ['http://127.0.0.1:5501', 'http://127.0.0.1:5000', 'http://127.0.0.1:5000', 'http://localhost:5000', undefined]; //todo no
+    const allowedOrigins = ['http://127.0.0.1:5501', 'http://127.0.0.1:5000', 'http://127.0.0.1:5000', 'http://localhost:5000'];
     const origin = req.headers.origin;
     if (allowedOrigins.includes(origin)) {
-        if (origin != undefined) { //todo remove
-            res.setHeader('Access-Control-Allow-Origin', origin);
-        }
+        res.setHeader('Access-Control-Allow-Origin', origin);
     } else {
         console.log(`Denied request due to CORS policy from ${origin}`);
     }
