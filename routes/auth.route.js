@@ -6,7 +6,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 import { Router } from "express";
-import passportGoogle from "../services/passport/passport-google.js";
+import passportGoogle from "../services/passport/passport-providers.js";
 
 const authRouter = Router()
 
@@ -29,6 +29,14 @@ authRouter.get('/css/style.css', function(req, res, next) {
 authRouter.get('/login/federated/google', passport.authenticate('google'));
 
 authRouter.get('/oauth2/redirect/google', passport.authenticate('google', {
+  successReturnToOrRedirect: '/',
+  failureRedirect: '/auth/login',
+  keepSessionInfo: true
+}));
+
+authRouter.get('/login/federated/github', passport.authenticate('github'));
+
+authRouter.get('/oauth2/redirect/github', passport.authenticate('github', {
   successReturnToOrRedirect: '/',
   failureRedirect: '/auth/login',
   keepSessionInfo: true

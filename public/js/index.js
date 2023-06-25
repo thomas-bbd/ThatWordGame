@@ -13,3 +13,9 @@ document.getElementById("start-btn").addEventListener("click", function (event) 
 
     window.location = `/auth/login/federated/${provider}`;
 });
+
+document.getElementById("github-btn").addEventListener("click", function (event) {
+    let provider = event.currentTarget.dataset.provider;
+
+    window.location = `/auth/login/federated/${provider}`;
+});

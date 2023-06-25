@@ -1,7 +1,6 @@
 import { insertUserRequest, selectFederatedCredentialsByIdRequest, insertFederatedCredentialsRequest } from "../../db/requests.js";
 
 export const userDBVerification = async (issuer, profile, cb) => {
-
     try {
         let response = await selectFederatedCredentialsByIdRequest(issuer, profile.id);
 

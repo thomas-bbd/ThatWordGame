@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>That Word Game</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="./css/style.css">
 
 
     <link rel="apple-touch-icon" sizes="180x180" href="images/favicon/apple-touch-icon.png">
@@ -23,23 +23,10 @@
 <body class="container">
 
     <header>
-        <img src="images/logo.png" alt="logo">
-        <h1 id="name-heading"> Welcome to <br /> That Word Game</h1>
+        <img src="./images/logo-with-text.svg" alt="logo">
     </header>
-
-    <main>
-        <p>Choose a provider to sign in with</p>
-        <hr class="divider" />
-        <button class="single-signin" id="start-btn" data-provider="google"><img
-                src="images/btn_google_signin_light_normal_web@2x.png" width="300"></button>
-        <br />
-        <button class="single-signin" id="github-btn" data-provider="github"><img
-            src="images/btn_github_signin_light_normal_web@2x.png" width="300"></button>
-        <br />
-        <p id="error-message"></p>
-    </main>
-
-    <script src="js/index.js" type="module"></script>
+    This screen needs to dynamically change from the game options screen (if we have one)
+    <script src="../js/client.js"></script>
 </body>
 
 </html>
