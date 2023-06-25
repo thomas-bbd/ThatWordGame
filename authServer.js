@@ -124,7 +124,7 @@ app.post('/token', (req,res)=>{
 /**
  * Checks the validity of a token
  */
-app.get('/valid', (req, res) => {
+app.post('/valid', (req, res) => {
     const token = req.body.token;
     if(token == null) return res.sendStatus(401);
     //We should check in DB for token
