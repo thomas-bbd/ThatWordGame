@@ -23,20 +23,19 @@ let refreshTokenStore = [];
 let accessTokenStore = []; // need to be able to validate access tokens
 
 // Add headers before the routes are defined
-// app.use(function (req, res, next) {
-//     // Website you wish to allow to connect
-//     const allowedOrigins = ['http://127.0.0.1:5501', 'http://127.0.0.1:5000', 'http://127.0.0.1:5000', 'http://localhost:5000', undefined];
-//     const origin = req.headers.origin;
-//     if (allowedOrigins.includes(origin)) {
-//         if (origin == undefined) 
-//             res.setHeader('Access-Control-Allow-Origin', origin);
-//     } else {
-//         console.log(`Denied request due to CORS policy from ${origin}`);
-//     }
-//     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-//     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-//     next();
-// });
+app.use(function (req, res, next) {
+    // Website you wish to allow to connect
+    const allowedOrigins = ['http://127.0.0.1:5501', 'http://127.0.0.1:5000', 'http://127.0.0.1:5000', 'http://localhost:5000'];
+    const origin = req.headers.origin;
+    if (allowedOrigins.includes(origin)) {
+        res.setHeader('Access-Control-Allow-Origin', origin);
+    } else {
+        console.log(`Denied request due to CORS policy from ${origin}`);
+    }
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    next();
+});
 
 app.get('/', (req, res) => {
     res.send('Home endpoint');
