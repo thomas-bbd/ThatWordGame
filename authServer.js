@@ -25,9 +25,9 @@ let accessTokenStore = []; // need to be able to validate access tokens
 // Add headers before the routes are defined
 app.use(function (req, res, next) {
     // Website you wish to allow to connect
-    const allowedOrigins = ['http://127.0.0.1:5501', 'http://127.0.0.1:5000', 'http://127.0.0.1:5000', 'http://localhost:5000'];
+    
     const origin = req.headers.origin;
-    if (allowedOrigins.includes(origin)) {
+    if (validateOrigin(origin)) {
         res.setHeader('Access-Control-Allow-Origin', origin);
     } else {
         console.log(`Denied request due to CORS policy from ${origin}`);
@@ -176,6 +176,11 @@ function validateLoginInput(username,email,password){
     return {param: 'login', value:true, message:'Login Input Valid'};
 }
 
+function validateOrigin(origin) {
+const allowedOrigins = ['http://127.0.0.1:5501', 'http://127.0.0.1:5000', 'http://127.0.0.1:5000', 
+'http://localhost:5000', 'http://wordgame-qa.af-south-1.elasticbeanstalk.com'];
+    return allowedOrigins.includes(origin);
+}
 
 function generateAccessToken(user){
     return jwt.sign(user, process.env.ACCESS_TOKEN, {expiresIn: '30s'});
