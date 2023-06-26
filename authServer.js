@@ -23,19 +23,20 @@ let refreshTokenStore = [];
 let accessTokenStore = []; // need to be able to validate access tokens
 
 // Add headers before the routes are defined
-app.use(function (req, res, next) {
-    // Website you wish to allow to connect
-    const allowedOrigins = ['http://127.0.0.1:5501', 'http://127.0.0.1:5000', 'http://127.0.0.1:5000', 'http://localhost:5000'];
-    const origin = req.headers.origin;
-    if (allowedOrigins.includes(origin)) {
-        res.setHeader('Access-Control-Allow-Origin', origin);
-    } else {
-        console.log(`Denied request due to CORS policy from ${origin}`);
-    }
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-    next();
-});
+// app.use(function (req, res, next) {
+//     // Website you wish to allow to connect
+//     const allowedOrigins = ['http://127.0.0.1:5501', 'http://127.0.0.1:5000', 'http://127.0.0.1:5000', 'http://localhost:5000', undefined];
+//     const origin = req.headers.origin;
+//     if (allowedOrigins.includes(origin)) {
+//         if (origin == undefined) 
+//             res.setHeader('Access-Control-Allow-Origin', origin);
+//     } else {
+//         console.log(`Denied request due to CORS policy from ${origin}`);
+//     }
+//     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+//     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+//     next();
+// });
 
 app.get('/', (req, res) => {
     res.send('Home endpoint');
@@ -71,6 +72,7 @@ app.post('/login', async (req,res)=>{
             //Sign JWT
             const accessToken = generateAccessToken(userPayload);
             accessTokenStore.push(accessToken);
+            console.log(`added ${accessToken} to the store`)
             //Create associated refresh token
             const refreshToken = jwt.sign(userPayload, process.env.REFRESH_TOKEN, {expiresIn : '60s'});
             //Push our refresh token to the db/store
@@ -125,13 +127,25 @@ app.post('/token', (req,res)=>{
  * Checks the validity of a token
  */
 app.post('/valid', (req, res) => {
+    console.log(`validation request: ${JSON.stringify(req.body)}`);
+    console.log(`body.token: ${req.body.token}, token: ${req.token}`);
     const token = req.body.token;
-    if(token == null) return res.sendStatus(401);
+    if(token == null){
+        console.log(`Token was null, returning 401`);
+        return res.sendStatus(401);
+    } 
     //We should check in DB for token
-    if(!accessTokenStore.includes(token)) return res.sendStatus(403);
+    if(!accessTokenStore.includes(token)) {
+        console.log(`token ${token} does not exist, returning 403`);
+        return res.sendStatus(403);
+    } 
 
     jwt.verify(token, process.env.ACCESS_TOKEN, (err,user)=>{
-        if(err) return res.sendStatus(403);
+        if(err){
+            console.log(`JWT verification failed. Err: ${err}`);
+            res.status(403)
+            return res.send(JSON.stringify({err: err}));
+        } 
         res.sendStatus(200);
     })
 })
