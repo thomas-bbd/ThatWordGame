@@ -1,6 +1,6 @@
 import passport from "passport";
 import GoogleStrategy from "passport-google-oidc";
-import { userDBVerification, idServerTokenValidation } from "./passport-network.js";
+import { userDBVerification, idServerTokenValidation, githubUserDBInsert } from "./passport-network.js";
 import GitHubStrategy from "passport-github2";
 import passportCustom from 'passport-custom';
 
@@ -21,7 +21,7 @@ passport.use("github",
   callbackURL: '/auth/oauth2/redirect/github',
   scope: [ 'profile' ]
 }, function(accessToken, refreshToken, profile, done) {
-  return done(null, profile);
+    githubUserDBInsert(profile, done);
   }));
 
 passport.use('idserver',

@@ -64,7 +64,9 @@ async function login() {
         errorField.innerHtml = "Fill in all fields"; //should be checked before sending anyways
     } else if (response.ok) {
         errorField.style.display = "none";
-        window.location = `/auth/idserver/redirect/idserver?user=${username}&email=${email}&token=${result.token}`;
+        sessionStorage.setItem("token", result.token);
+        sessionStorage.setItem("refreshToken", result.refreshToken);
+        window.location = `/auth/idserver/redirect/idserver?user=${username}&email=${email}&token=${result.token}&refreshToken=${result.refreshToken}&userId=${result.userID}`;
     }
 }
 
