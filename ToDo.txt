@@ -10,6 +10,13 @@
 
 - Refactor the code to call '/token' when an access token expires
 
+//ENV VARIABLES TO SET
+RDS_HOSTNAME=*
+RDS_USERNAME=*
+RDS_PASSWORD=*
+RDS_PORT=*
+REFRESH_TOKEN=*
+ACCESS_TOKEN=*
 
 
 //TO CREATE A CRYPTOGRAPHIC KEY FOR TOKEN GENERATION

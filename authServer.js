@@ -1,8 +1,9 @@
 /**
  * This server only handles user authentication
  */
-import { InsertUser, GetUserByUsernameEmail} from './databaseAccess.js';
-import {validateLoginInput, validateRegistrationInput} from './InputValidation.js';
+import { InsertUser, GetUserByUsernameEmail} from './Database/databaseAccess.js';
+import { VerifyLogin, generateAccessToken, generateRefreshToken} from './Validations/TokenManagement.js';
+import {validateLoginInput, validateRegistrationInput} from './Validations/InputValidation.js';
 import express from 'express';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
@@ -61,8 +62,7 @@ app.post('/login', async (req,res)=>{
             accessTokenStore.push(accessToken);
             console.log(`added ${accessToken} to the store`)
             //Create associated refresh token
-            const refreshToken = jwt.sign(userPayload, process.env.REFRESH_TOKEN, {expiresIn : '60s'});
-            //Push our refresh token to the db/store
+            const refreshToken = generateRefreshToken(userPayload);
             refreshTokenStore.push(refreshToken);
             res.json({token: accessToken, refreshToken: refreshToken});
         }else{
@@ -145,27 +145,6 @@ app.delete('/logout', (req,res)=>{
     refreshTokenStore = refreshTokenStore.filter(token => token !== req.body.token);
     return res.sendStatus(204);
 })
-
-function generateAccessToken(user){
-    return jwt.sign(user, process.env.ACCESS_TOKEN, {expiresIn: '30s'});
-}
-
-async function VerifyLogin(username, email, password){
-    let result = await GetUserByUsernameEmail(username, email);
-    if(result.length !== 0){
-        try{
-            let db_password = result[0].password;
-            console.log(db_password);
-            if(await bcrypt.compare(password, db_password)){
-                return true;
-            }
-        }catch(error){
-            return error;
-        }
-    }
-
-    return false;
-}
 
 
 app.listen(port, ()=>{
