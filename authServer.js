@@ -1,17 +1,16 @@
 /**
  * This server only handles user authentication
  */
-import { InsertUser, FetchUsers, GetUserByUsernameEmail} from './databaseAccess.js';
+import { InsertUser, GetUserByUsernameEmail} from './Database/databaseAccess.js';
+import { VerifyLogin, generateAccessToken, generateRefreshToken} from './Validations/TokenManagement.js';
+import {validateLoginInput, validateRegistrationInput} from './Validations/InputValidation.js';
 import express from 'express';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-// const express = require('express');
-// const bcrypt = require('bcrypt');
-// const jwt = require('jsonwebtoken');
+
 const app = express();
 const port = process.env.PORT || 5000;
 import { config } from "dotenv";
-
 config();
 
 //Allow us to read body requests as JSON
@@ -46,16 +45,6 @@ app.get('/test', (req,res)=>{
     res.status(200).json({message:'Test endpoint hit successfully'});
 })
 
-/**
- * login Logic
- * -> We recieve a login request from our client
- * -> We validate username and password
- * -> We issue a token
- * 
- * Refresh Tokens
- * -> We save the RT and when our access token expires we will refresh it
- * -> We invalidate our refresh token on logout so that it cannot be used to grant access
- */
 
 app.post('/login', async (req,res)=>{
     //TO DO: Authenticate user using ARGON2
@@ -64,7 +53,8 @@ app.post('/login', async (req,res)=>{
     const password = req.body.password;
     const loginCredentialsValid = validateLoginInput(username,email,password);
     if(loginCredentialsValid.value){
-        if(await VerifyLogin(username,email,password)){
+        const userLoginSuccess = await VerifyLogin(username,email,password);
+        if(userLoginSuccess.success){
             console.log(`Login Success for ${username}`);
             //Payload to Serialize
             const userPayload = {name: username};
@@ -73,40 +63,38 @@ app.post('/login', async (req,res)=>{
             accessTokenStore.push(accessToken);
             console.log(`added ${accessToken} to the store`)
             //Create associated refresh token
-            const refreshToken = jwt.sign(userPayload, process.env.REFRESH_TOKEN, {expiresIn : '60s'});
-            //Push our refresh token to the db/store
+            const refreshToken = generateRefreshToken(userPayload);
             refreshTokenStore.push(refreshToken);
-            res.json({token: accessToken, refreshToken: refreshToken});
+            const userID = userLoginSuccess.userID;
+            res.json({userID, token: accessToken, refreshToken: refreshToken});
         }else{
             res.status(401).json({error:'Login Failed'});
         }
     }else{
-        res.status(400).json({error: `Missing Input - ${loginCredentialsValid.param}`});
+        res.status(400).json({error: `Missing Input - ${loginCredentialsValid.message}`});
     }
 });
 
-/**
- *  User Registration 
- */
 
 app.post('/register', async (req,res)=>{
     let username = req.body.username;
     let password = req.body.password;
     let email = req.body.email;
-    let db_user = await GetUserByUsernameEmail(username, email);
-    if(db_user.length === 0){
-        await InsertUser(username,password,email);
-        res.sendStatus(200);
+    const registrationInputValid = validateRegistrationInput(username,email,password);
+    if(registrationInputValid.value)
+    {
+        let db_user = await GetUserByUsernameEmail(username, email);
+        if(db_user.length === 0){
+            await InsertUser(username,password,email);
+            res.sendStatus(200);
+        }else{
+            res.status(401).json({error:'User Already Exists'}).send();
+        }
+
     }else{
-        res.status(401).json({error:'User Already Exists'}).send();
+        res.status(400).json({error: `${registrationInputValid.message}`});
     }
 });
-
-/**
- * Token Refresh
- * -> When our original access token expires
- *    we will use our refresh token to generare a new one
- */
 
 app.post('/token', (req,res)=>{
     //Fetch Token
@@ -176,15 +164,17 @@ function validateLoginInput(username,email,password){
     return {param: 'login', value:true, message:'Login Input Valid'};
 }
 
-function validateOrigin(origin) {
-const allowedOrigins = ['http://127.0.0.1:5501', 'http://127.0.0.1:5000', 'http://127.0.0.1:5000', 
-'http://localhost:5000', 'http://wordgame-qa.af-south-1.elasticbeanstalk.com'];
-    return allowedOrigins.includes(origin);
-}
 
 function generateAccessToken(user){
     return jwt.sign(user, process.env.ACCESS_TOKEN, {expiresIn: '30s'});
 }
+
+function validateOrigin(origin) {
+    const allowedOrigins = ['http://127.0.0.1:5501', 'http://127.0.0.1:5000', 'http://127.0.0.1:5000', 
+    'http://localhost:5000', 'http://wordgame-qa.af-south-1.elasticbeanstalk.com'];
+        return allowedOrigins.includes(origin);
+    }
+    
 
 
 async function VerifyLogin(username, email, password){

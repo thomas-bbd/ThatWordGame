@@ -11,13 +11,15 @@ import jwt from 'jsonwebtoken';
 const app = express();
 const port = process.env.PORT || 8080;
 
-import "dotenv/config.js";
+import { config } from "dotenv";
+
+config();
 
 //Allow us to read body requests as JSON
 app.use(express.json()); 
 
 //For Testing API Access
-const posts = [{name: 'Kyle', posts: '1'}, {name: 'John', posts: '2'}, {name:'Mikhail', posts: '3'}]
+const posts = [{name: 'Kyle', posts: '1'}, {name: 'John', posts: '2'}, {name:'Mikhail', posts: '3'}, {name:'BobbyTables', posts:'I Hope you sanitized your inputs!'}];
 
 //Use middleware to verify token before allowing access to API
 app.get('/posts', authenticateToken, (req,res) =>{
