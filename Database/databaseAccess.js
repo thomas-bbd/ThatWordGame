@@ -85,7 +85,7 @@ async function GetUserByUsernameEmail(username, email){
           .request()
           .input('username', sql.VarChar, username)
           .input('email', sql.VarChar, email)
-          .query('SELECT u.username, u.email, u.password FROM dbo.USERS u WHERE u.username = @username AND u.email = @email');
+          .query('SELECT u.id, u.username, u.email, u.password FROM dbo.USERS u WHERE u.username = @username AND u.email = @email');
       return result.recordset;
   } catch (error) {
       return error;
