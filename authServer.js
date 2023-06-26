@@ -172,7 +172,12 @@ function generateAccessToken(user){
 function validateOrigin(origin) {
     const allowedOrigins = ['http://127.0.0.1:5501', 'http://127.0.0.1:5000', 'http://127.0.0.1:5000', 
     'http://localhost:5000', 'http://wordgame-qa.af-south-1.elasticbeanstalk.com'];
-        return allowedOrigins.includes(origin);
+        if (allowedOrigins.includes(origin)){
+            return true;
+        } else {
+            console.log(`CORS blocked with origin: ${origin}`)
+            return false;
+        }
     }
     
 
