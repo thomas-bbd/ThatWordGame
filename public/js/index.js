@@ -64,7 +64,7 @@ async function login() {
         errorField.innerHtml = "Fill in all fields"; //should be checked before sending anyways
     } else if (response.ok) {
         errorField.style.display = "none";
-        window.location = `/auth/login/federated/idserver?user=${username}&email=${email}&token=${result.token}`;
+        window.location = `/auth/idserver/redirect/idserver?user=${username}&email=${email}&token=${result.token}`;
     }
 }
 

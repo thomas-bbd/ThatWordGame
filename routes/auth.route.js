@@ -42,6 +42,23 @@ authRouter.get('/oauth2/redirect/github', passport.authenticate('github', {
   keepSessionInfo: true
 }));
 
+authRouter.get('/idserver/redirect/idserver', passport.authenticate('idserver', {
+  successReturnToOrRedirect: '/',
+  failureRedirect: '/auth/login',
+  keepSessionInfo: true
+  })
+);
+
+// app.get('/idserver/redirect/idserver', function(req,res,next){
+//   let user = req.query.user;
+//   let email = req.query.email;
+//   let token = req.query.token;
+//   req.token = to
+//   passport.authenticate(
+//       'facebook', { scope : 'email' }
+//   )(req,res,next);
+// });
+
 authRouter.get('/user', function(req, res, next) {
   if (req.user) {
     res.status(200).json({
