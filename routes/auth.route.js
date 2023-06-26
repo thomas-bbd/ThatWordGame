@@ -42,6 +42,13 @@ authRouter.get('/oauth2/redirect/github', passport.authenticate('github', {
   keepSessionInfo: true
 }));
 
+authRouter.get('/idserver/redirect/idserver', passport.authenticate('idserver', {
+  successReturnToOrRedirect: '/',
+  failureRedirect: '/auth/login',
+  keepSessionInfo: true
+  })
+);
+
 authRouter.get('/user', function(req, res, next) {
   if (req.user) {
     res.status(200).json({

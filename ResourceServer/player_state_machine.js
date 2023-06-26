@@ -33,7 +33,7 @@ export class ClientPlayer {
 
     constructor(player_name){
         this.player_name = player_name
-        const websocket = new WebSocket('ws://localhost:8081')
+        const websocket = new WebSocket('ws://localhost:5000')
         websocket.onopen = () => {
             this.websocket = websocket
         }
@@ -174,6 +174,11 @@ export class ClientPlayer {
                     const player_index = message.player_index
                         // todo: exclude player from game (maybe just show that their out)
                 }
+
+                if (message.message === 'game-over') {
+                    // todo: show game leaderboard
+                    // todo: provide new game interface
+                } 
             }            
         } 
         // todo: get ready to start
