@@ -148,11 +148,6 @@ app.delete('/logout', (req,res)=>{
     return res.sendStatus(204);
 })
 
-
-function generateAccessToken(user){
-    return jwt.sign(user, process.env.ACCESS_TOKEN, {expiresIn: '30s'});
-}
-
 function validateOrigin(origin) {
     const allowedOrigins = ['http://127.0.0.1:5501', 'http://127.0.0.1:5000', 'http://127.0.0.1:5000', 
     'http://localhost:5000', 'http://wordgame-qa.af-south-1.elasticbeanstalk.com'];
@@ -164,26 +159,6 @@ function validateOrigin(origin) {
         }
     }
     
-
-
-async function VerifyLogin(username, email, password){
-    let result = await GetUserByUsernameEmail(username, email);
-    console.log(result);
-    if(result.length !== 0){
-        try{
-            let db_password = result[0].password;
-            console.log(db_password);
-            if(await bcrypt.compare(password, db_password)){
-                return true;
-            }
-        }catch(error){
-            return error;
-        }
-    }
-
-    return false;
-}
-
 app.listen(port, ()=>{
     console.log(`Listening on localhost:${port}`);
 });
