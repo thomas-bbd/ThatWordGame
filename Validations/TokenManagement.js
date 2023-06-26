@@ -10,17 +10,18 @@ async function VerifyLogin(username, email, password){
     let result = await GetUserByUsernameEmail(username, email);
     if(result.length !== 0){
         try{
+            let userID = result[0].id;
             let db_password = result[0].password;
             console.log(db_password);
             if(await bcrypt.compare(password, db_password)){
-                return true;
+                return {success: true , userID};
             }
         }catch(error){
             return error;
         }
     }
 
-    return false;
+    return {success: false , userID};;
 }
 
 function generateRefreshToken(user){

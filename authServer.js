@@ -53,7 +53,8 @@ app.post('/login', async (req,res)=>{
     const password = req.body.password;
     const loginCredentialsValid = validateLoginInput(username,email,password);
     if(loginCredentialsValid.value){
-        if(await VerifyLogin(username,email,password)){
+        const userLoginSuccess = await VerifyLogin(username,email,password);
+        if(userLoginSuccess.success){
             console.log(`Login Success for ${username}`);
             //Payload to Serialize
             const userPayload = {name: username};
@@ -64,7 +65,8 @@ app.post('/login', async (req,res)=>{
             //Create associated refresh token
             const refreshToken = generateRefreshToken(userPayload);
             refreshTokenStore.push(refreshToken);
-            res.json({token: accessToken, refreshToken: refreshToken});
+            const userID = userLoginSuccess.userID;
+            res.json({userID, token: accessToken, refreshToken: refreshToken});
         }else{
             res.status(401).json({error:'Login Failed'});
         }
