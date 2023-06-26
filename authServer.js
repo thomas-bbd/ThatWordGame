@@ -148,22 +148,6 @@ app.delete('/logout', (req,res)=>{
     return res.sendStatus(204);
 })
 
-function validateLoginInput(username,email,password){
-    if(username == null || username == undefined || username.length === 0){
-        return {param: 'username', value: false, message:'No Username Provided!'};
-    }else if(email == null || email == undefined || email.length === 0){
-        return {param: 'email', value: false, message:'No Email Provided!'};
-    }else if(password == null || password == undefined || password.length === 0){
-        return {param: 'password', value: false, message:'No Password Provided!'};
-    }
-
-    if(!(email.includes('@'))){
-        return {param: 'email', value: false, message:'Incorrect Email Format!'};
-    }
-
-    return {param: 'login', value:true, message:'Login Input Valid'};
-}
-
 
 function generateAccessToken(user){
     return jwt.sign(user, process.env.ACCESS_TOKEN, {expiresIn: '30s'});
