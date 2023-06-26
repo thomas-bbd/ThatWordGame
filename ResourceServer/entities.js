@@ -1,5 +1,6 @@
 import { randomUUID } from "crypto";
 import { response } from "express";
+import { resolve } from "path";
 
 function shuffleArray(array) {
   for (var i = array.length - 1; i > 0; i--) {
@@ -20,6 +21,8 @@ export class Game {
   turn = -1
   curr_player = null
   turn_promises = []
+  eliminated_players = []
+  words_played = []
 
   constructor(player_name, ws){
     this.game_id = randomUUID()
@@ -93,8 +96,33 @@ export class Game {
     this.next()
   }
 
+  countdown(player){
+    const time_remaining = player.total_time - player.time_spent
+    const start_time = Date.now()
+    player.start_time = start_time
+
+    new Promise(resolve => {
+      setTimeout(() => {
+        resolve()
+      }, time_remaining);
+    }).then(() => {
+      if (player.start_time === start_time) {
+        console.log(player.player_name + ' has been eliminated')
+        player.set_eliminated()
+        this.eliminated_players.push(player)
+        this.next()
+      }
+    })
+  }
+
   next = () => {
+    if (this.eliminated_players.length + 1 === this.game_lineup.length) {
+      this.end()
+      return
+    }
+
     this.turn = ((this.turn + 1) % this.game_lineup.length)
+    while(this.game_lineup[this.turn].is_eliminated()) this.turn = ((this.turn + 1) % this.game_lineup.length)
 
     this.broadcast(
       {
@@ -118,20 +146,24 @@ export class Game {
       })
     )
 
-    //todo: work on reducing remaining time for players
-    //this.curr_player.timer = new Promise(resolve => setTimeout(resolve, this.curr_player.total_time - this.curr_player.time_spent))
+    this.countdown(this.curr_player)
 
   }
 
   play = (word, player_id, websocket) => {
     if (player_id === this.curr_player.player_id && this.curr_player.websocket === websocket){
+      this.words_played.push(word)
+      this.curr_player.words.push(word)
       this.broadcast({
         message_type: 'notification',
         action: 'word-played',
         message: `${this.curr_player.player_name} played the word ${word}`,
-        word: word
+        word: word,
+        words_played: this.words_played
       })
-      
+
+      this.curr_player.time_spent += Date.now() - this.curr_player.start_time
+      this.curr_player.start_time = 0
       this.next()
 
     } else {
@@ -139,10 +171,28 @@ export class Game {
         JSON.stringify({
           message_type: 'response',
           message_status: 'failure',
-          response_message:  'it\'s not your turn bro'
+          message:  'it\'s not your turn bro'
         })
       )
     }
+  }
+
+  end = () => {
+    console.log('game over')
+    if (this.complete) return false
+    this.complete = true
+    this.broadcast({
+      message_type: 'notification',
+      message: 'game-over',
+      final_lineup: this.game_lineup.map( player => ({
+        name: player.player_name,
+        score: player.words.map(word => word.length).reduce((total_score, word_len) => {
+          return total_score + word_len
+        }) * player.words.length
+      }))
+    })
+
+    // TODO: persist the game
   }
 }
 
@@ -159,12 +209,17 @@ export class Player {
   websocket
   player_name
   player_id
-  total_time = 20000 // ms
+  total_time = 5000 // ms
   time_spent = 0
+  eliminated = false
+  words = []
 
   constructor (player_name, websocket) {
     this.websocket = websocket
     this.player_name = player_name
     this.player_id = randomUUID();
   }
+
+  set_eliminated = () => this.eliminated = true
+  is_eliminated = () => { return this.eliminated }
 }
