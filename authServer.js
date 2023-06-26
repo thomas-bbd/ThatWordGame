@@ -1,17 +1,15 @@
 /**
  * This server only handles user authentication
  */
-import { InsertUser, FetchUsers, GetUserByUsernameEmail} from './databaseAccess.js';
+import { InsertUser, GetUserByUsernameEmail} from './databaseAccess.js';
+import {validateLoginInput, validateRegistrationInput} from './InputValidation.js';
 import express from 'express';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-// const express = require('express');
-// const bcrypt = require('bcrypt');
-// const jwt = require('jsonwebtoken');
+
 const app = express();
 const port = process.env.PORT || 5000;
 import { config } from "dotenv";
-
 config();
 
 //Allow us to read body requests as JSON
@@ -46,16 +44,6 @@ app.get('/test', (req,res)=>{
     res.status(200).json({message:'Test endpoint hit successfully'});
 })
 
-/**
- * login Logic
- * -> We recieve a login request from our client
- * -> We validate username and password
- * -> We issue a token
- * 
- * Refresh Tokens
- * -> We save the RT and when our access token expires we will refresh it
- * -> We invalidate our refresh token on logout so that it cannot be used to grant access
- */
 
 app.post('/login', async (req,res)=>{
     //TO DO: Authenticate user using ARGON2
@@ -81,32 +69,30 @@ app.post('/login', async (req,res)=>{
             res.status(401).json({error:'Login Failed'});
         }
     }else{
-        res.status(400).json({error: `Missing Input - ${loginCredentialsValid.param}`});
+        res.status(400).json({error: `Missing Input - ${loginCredentialsValid.message}`});
     }
 });
 
-/**
- *  User Registration 
- */
 
 app.post('/register', async (req,res)=>{
     let username = req.body.username;
     let password = req.body.password;
     let email = req.body.email;
-    let db_user = await GetUserByUsernameEmail(username, email);
-    if(db_user.length === 0){
-        await InsertUser(username,password,email);
-        res.sendStatus(200);
+    const registrationInputValid = validateRegistrationInput(username,email,password);
+    if(registrationInputValid.value)
+    {
+        let db_user = await GetUserByUsernameEmail(username, email);
+        if(db_user.length === 0){
+            await InsertUser(username,password,email);
+            res.sendStatus(200);
+        }else{
+            res.status(401).json({error:'User Already Exists'}).send();
+        }
+
     }else{
-        res.status(401).json({error:'User Already Exists'}).send();
+        res.status(400).json({error: `${registrationInputValid.message}`});
     }
 });
-
-/**
- * Token Refresh
- * -> When our original access token expires
- *    we will use our refresh token to generare a new one
- */
 
 app.post('/token', (req,res)=>{
     //Fetch Token
@@ -160,31 +146,12 @@ app.delete('/logout', (req,res)=>{
     return res.sendStatus(204);
 })
 
-function validateLoginInput(username,email,password){
-    if(username == null || username == undefined || username.length === 0){
-        return {param: 'username', value: false, message:'No Username Provided!'};
-    }else if(email == null || email == undefined || email.length === 0){
-        return {param: 'email', value: false, message:'No Email Provided!'};
-    }else if(password == null || password == undefined || password.length === 0){
-        return {param: 'password', value: false, message:'No Password Provided!'};
-    }
-
-    if(!(email.includes('@'))){
-        return {param: 'email', value: false, message:'Incorrect Email Format!'};
-    }
-
-    return {param: 'login', value:true, message:'Login Input Valid'};
-}
-
-
 function generateAccessToken(user){
     return jwt.sign(user, process.env.ACCESS_TOKEN, {expiresIn: '30s'});
 }
 
-
 async function VerifyLogin(username, email, password){
     let result = await GetUserByUsernameEmail(username, email);
-    console.log(result);
     if(result.length !== 0){
         try{
             let db_password = result[0].password;
@@ -199,6 +166,7 @@ async function VerifyLogin(username, email, password){
 
     return false;
 }
+
 
 app.listen(port, ()=>{
     console.log(`Listening on localhost:${port}`);
