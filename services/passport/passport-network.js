@@ -78,7 +78,7 @@ export const idServerTokenValidation = async (req, cb) => {
             headers: {
                 "Content-Type": "application/json",
               },
-            body: JSON.stringify({token: token, "test": "test"})
+            body: JSON.stringify({token: token})
         });
         if (!response.ok) {
             console.log(response.status);
