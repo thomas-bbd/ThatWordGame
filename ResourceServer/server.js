@@ -80,7 +80,7 @@ const handle_message = (message, websocket) => {
 
 wss.on('connection', (ws, req) => {
   console.log('new connection created')
-  console.log(req.url)
+  // console.log(req.url)
   ws.on('message', msg => handle_message(JSON.parse(msg), ws))
 })
 
