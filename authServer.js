@@ -151,7 +151,7 @@ app.delete('/logout', (req,res)=>{
 function validateOrigin(origin) {
     const allowedOrigins = ['http://127.0.0.1:5501', 'http://127.0.0.1:5000', 'http://127.0.0.1:5000', 
     'http://localhost:5000', 'http://wordgame-qa.af-south-1.elasticbeanstalk.com', 'https://www.tomsportfolio.co.za', 'http://thatwordgame.af-south-1.elasticbeanstalk.com',
-    'http://thatwordgameqa-als-env.eba-uqjvqey9.af-south-1.elasticbeanstalk.com'];
+    'http://thatwordgameqa-als-env.eba-uqjvqey9.af-south-1.elasticbeanstalk.com' ,'https://jbzxm2wkjh.us-east-1.awsapprunner.com'];
         if (allowedOrigins.includes(origin)){
             return true;
         } else {
