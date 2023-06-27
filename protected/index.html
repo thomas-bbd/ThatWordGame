@@ -40,17 +40,20 @@
   </head>
 
   <body class="v-container-vh">
-    <nav>
-      <ul class="container-h">
-        <li><a class="nav back" id="nav-back-btn">Back</a></li>
-        <li><a class="nav finish" id="nav-finish-btn">Finish</a></li>
+    <nav class="navbar">
+      <ul class="container">
+        <li class="container-vh">
+          <img src="./images/left.png" class="back-icon" />
+          <a class="back" id="nav-back-btn">Back</a>
+        </li>
+        <li><a class="finish" id="nav-finish-btn">Finish</a></li>
       </ul>
     </nav>
-    <header>
+    <header class="v-container-vh">
       <img src="/images/pencil.png" alt="logo" class="logo" />
       <h1><span id="username-heading">User</span>'s Dashboard</h1>
     </header>
-    <main class="v-container-vh">
+    <main class="v-container-h">
       <!-- <section class="page dashboard-screen">
         <section class="dashboard-section">
           <h2>Join Game</h2>
@@ -68,7 +71,9 @@
 
         <section class="dashboard-section">
           <h2>Create A Game</h2>
-          <button type="button" class="btn">Create A Game</button>
+          <form>
+            <button type="submit" class="btn">Create A Game</button>
+          </form>
         </section>
 
         <section class="dashboard-section">
@@ -97,12 +102,12 @@
         </section>
       </section> -->
 
-      <section class="page game-screen v-container-vh">
+      <section class="page game-screen v-container">
         <section class="convo-section v-container-v">
           <ul class="v-container-v">
-            <li class="container-vh">
-              <article class="game-message friendly container-v">
-                <p class="message-bubble">Lorem ipsum dolor</p>
+            <li>
+              <article class="bubble message friendly container-v">
+                <p>Lorem ipsum dolor</p>
                 <img
                   src="./images/green-player.png"
                   alt="Friendly player icon"
@@ -111,8 +116,8 @@
               </article>
             </li>
             <li>
-              <article class="game-message enemy container-v">
-                <p class="message-bubble">Lorem ipsum dolor sit,</p>
+              <article class="bubble message enemy container-v">
+                <p>Lorem ipsum dolor sit,</p>
                 <img
                   src="./images/yellow-player.png"
                   alt="Enemy player icon"
@@ -122,20 +127,12 @@
             </li>
           </ul>
         </section>
-        <section class="message-section">
-          <form>
+        <section class="message-section container-h">
+          <form class="bubble container-v">
             <input type="text" placeholder="Type a new message..." />
             <button type="submit">
-              <img
-                src="./images/send.png"
-                alt="Send message button"
-                class="send-icon enabled"
-              />
-              <img
-                src="./images/soon.png"
-                alt="Button saying that it's your turn soon"
-                class="send-icon disabled"
-              />
+              <img src="./images/send.png" alt="" class="send-icon enabled" />
+              <!-- <img src="./images/soon.png" alt="" class="send-icon disabled" /> -->
             </button>
           </form>
         </section>
