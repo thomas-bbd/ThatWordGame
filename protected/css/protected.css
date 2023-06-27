@@ -21,8 +21,8 @@
   --gap-0: 0rem;
 
   --font-size: 1.5rem;
-  --font-size-large: 2rem;
-  --font-size-x-large: 3rem;
+  --font-size-lg: 2rem;
+  --font-size-xl: 3rem;
 
   line-height: 1;
   font-weight: 400;
@@ -49,7 +49,8 @@
   justify-content: center;
 }
 
-.container-vh .container-hv {
+.container-vh,
+.container-hv {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -74,7 +75,8 @@
   justify-content: flex-start;
 }
 
-.v-container-vh .v-container-hv {
+.v-container-vh,
+.v-container-hv {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -113,23 +115,11 @@ body {
   flex: 1 1 0;
 }
 
-.provider-sign-on {
-  align-self: flex-start;
-  display: grid;
-  justify-items: center;
-  align-items: center;
-}
-
 form {
   align-self: flex-start;
   display: grid;
   justify-items: center;
   align-items: center;
-}
-
-.class {
-  width: 30vw;
-  height: auto;
 }
 
 .login-form-field::placeholder {
@@ -158,30 +148,16 @@ form {
 }
 
 button {
+  background-color: rgb(54, 102, 100);
   border: none;
-  color: inherit;
-  background: inherit;
-  text-align: inherit;
-  padding: 0.5em 1em;
-  font-weight: 500;
-  font-family: inherit;
 }
 
-button:hover {
-  border-color: var(--highlight-color);
+header .logo {
+  width: 20vw;
+  height: auto;
 }
 
-h1 {
-  font-size: var(--font-size-x-large);
-  line-height: 1.2;
-}
-
-h2 {
-  font-weight: 500;
-  font-size: var(--font-size-large);
-}
-
-h3 {
-  font-size: var(--font-size);
-  font-weight: 600;
+.message-bubble .player-icon {
+  width: 5vw;
+  height: auto;
 }

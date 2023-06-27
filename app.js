@@ -50,7 +50,7 @@ passport.initialize();
 
 app.use("/auth", authRouter);
 app.use("/home", express.static(__dirname + "/public"));
-// app.use("/", express.static(__dirname + "/protected")); // TODO: Remove in prod
-app.use("/", ensureLoggedIn("/home"), express.static(__dirname + "/protected"));
+app.use("/", express.static(__dirname + "/protected")); // TODO: Remove in prod
+// app.use("/", ensureLoggedIn("/home"), express.static(__dirname + "/protected"));
 
 export default app;
