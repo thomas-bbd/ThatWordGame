@@ -4,6 +4,7 @@ import { config } from "dotenv";
 import app from "../app.js";
 import debug from "debug";
 import http from "http";
+import path from "path";
 import {
   initiate_game,
   join_game,
@@ -33,15 +34,9 @@ process.on("unhandledRejection", (err) => {
 app.get("game/init");
 
 app.get("/", (req, res) => {
-  res.send("Home endpoint");
-});
-
-app.get("/2", (req, res) => {
-  res.send("2nd endpoint.");
-});
-
-app.get("/3", (req, res) => {
-  res.send("please fucking work");
+  res.sendFile("index.html", {
+    root: path.join(__dirname, "../protected/index.html"),
+  });
 });
 
 app.get("/db", (req, res) => {

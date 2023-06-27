@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>That Word Game</title>
-    <link rel="stylesheet" href="./css/style.css" />
+    <link rel="stylesheet" href="/css/style.css" type="text/css" />
 
     <link
       rel="apple-touch-icon"
@@ -40,61 +40,101 @@
   </head>
 
   <body class="container">
+    <nav>
+      <ul>
+        <li><a class="nav back" id="nav-back-btn">Back</a></li>
+        <li><a class="nav finish" id="nav-finish-btn">Finish</a></li>
+      </ul>
+    </nav>
     <header>
       <img src="./images/pencil.png" alt="logo" />
       <h1><span id="username-heading">User</span>'s Dashboard</h1>
     </header>
     <main>
-      <section class="dashboard-screen">
-        <button class="btn" onclick="goTo('./game?create')">Create Game</button>
-        <button class="btn" onclick="goTo('./game?join')">Join Game</button>
-        <br />
+      <section class="page dashboard-screen">
+        <section class="dashboard-section">
+          <h2>Join Game</h2>
+          <form>
+            <label for="gameID">Game ID:</label>
+            <input
+              type="text"
+              id="gameID"
+              name="gameID"
+              placeholder="Enter a valid Game ID..."
+            />
+            <button type="submit" class="btn">Join Game</button>
+          </form>
+        </section>
+
+        <section class="dashboard-section">
+          <h2>Create A Game</h2>
+          <button type="button" class="btn">Create A Game</button>
+        </section>
+
+        <section class="dashboard-section">
+          <h2>Past Games</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Opponent</th>
+                <th>String Length</th>
+                <th>Time Taken</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>UserBar</td>
+                <td>10 words</td>
+                <td>37 seconds</td>
+              </tr>
+              <tr>
+                <td>FooUser</td>
+                <td>10 words</td>
+                <td>37 seconds</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
       </section>
 
-      <section class="Join Game">
-        <h2>Join Game</h2>
-        <form>
-          <label for="gameID">Game ID:</label>
-          <input
-            type="text"
-            id="gameID"
-            name="gameID"
-            placeholder="Enter a valid Game ID..."
-          />
-          <button type="submit" class="btn">Join Game</button>
-        </form>
+      <section class="page game-screen">
+        <section class="convo-section">
+          <ul>
+            <li>
+              <article class="game-message friendly">
+                <p>Lorem ipsum dolor</p>
+                <img
+                  src="./images/green-player.png"
+                  alt="Friendly player icon"
+                />
+              </article>
+            </li>
+            <li>
+              <article class="game-message enemy">
+                <p>Lorem ipsum dolor sit,</p>
+                <img src="./images/yellow-player.png" alt="Enemy player icon" />
+              </article>
+            </li>
+          </ul>
+        </section>
+        <section class="message-section">
+          <form>
+            <input type="text" placeholder="Type a new message..." />
+            <button type="submit">
+              <img
+                src="./images/send.png"
+                alt="Send message button"
+                class="enabled-image"
+              />
+              <img
+                src="./images/soon.png"
+                alt="Button saying that it's your turn soon"
+                class="disabled-image"
+              />
+            </button>
+          </form>
+        </section>
       </section>
-
-      <section class="create-game">
-        <h2>Create A Game</h2>
-        <button type="button" class="btn">Create A Game</button>
-      </section>
-      <section class="past-game">
-        <h2>Past Games</h2>
-        <table>
-          <thead>
-            <tr>
-              <th>Opponent</th>
-              <th>String Length</th>
-              <th>Time Taken</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>UserBar</td>
-              <td>10 words</td>
-              <td>37 seconds</td>
-            </tr>
-            <tr>
-              <td>FooUser</td>
-              <td>10 words</td>
-              <td>37 seconds</td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
-      <section class="game-screen"></section>
-      <section class="game-screen"></section>
     </main>
 
     <script>
