@@ -1,4 +1,4 @@
-import { enable_start, populate_lobby, show_lobby } from "./display-handler.js"
+import { enable_start, populate_lobby, prompt_for_word, show_eliminated, show_game_start, show_lobby, show_scores, update_word_list } from "./display-handler.js"
 
 export const STATE = {
     BLANK       : 0,
@@ -114,7 +114,7 @@ export class ClientPlayer {
         this.player_list = message.current_lineup
         populate_lobby(this.player_list)
         if (this.is(STATE.GAME_MASTER)) {
-            enable_start()
+            enable_start(this)
         }
     }
 
@@ -123,6 +123,9 @@ export class ClientPlayer {
         this.game_started = true
         this.unset(STATE.LOBBY)
         this.set(STATE.IN_GAME)
+        
+        console.log('game start')
+        show_game_start(this)
 
         this.websocket.onmessage = async event => {
             const message = JSON.parse(event.data)
@@ -135,6 +138,7 @@ export class ClientPlayer {
                     this.player_list = message.current_lineup
                     this.turn_index = message.turn
                     this.set(STATE.WAITING)
+                    populate_lobby(this.player_list)
                 }
 
                 if (message.message === 'your-turn'){
@@ -145,29 +149,30 @@ export class ClientPlayer {
                     this.unset(STATE.WAITING)
                     this.set(STATE.MY_TURN)
 
-                    // todo: give player input box or something
+                    prompt_for_word(this)                   
                     // todo: show countdown
-                    // todo: call play_word when input is submitted
                 }
 
                 if (message.message === 'eliminated'){
                     if (message.player_id = this.player_id){
-                        // todo: exclude self from game
+                        show_eliminated()
                     }
                 }
 
                 if (message.message === 'elimination'){
                     const player_index = message.player_index
-                        // todo: exclude player from game (maybe just show that their out)
                 }
 
                 if (message.message === 'game-over') {
-                    // todo: show game leaderboard
-                    // todo: provide new game interface
+                    this.player_list = message.final_lineup
+                    show_scores(this)
                 } 
+
+                if (message.action === 'word-played') {
+                    update_word_list(message.words_played)
+                }
             }            
-        } 
-        // todo: get ready to start
+        }
     }
 
     start_game = () => {
