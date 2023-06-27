@@ -7,8 +7,10 @@ import { ClientPlayer } from "./player-state-machine.js"
 
 let client = null
 
-const wsURL = window.location.host.includes("localhost") ? `ws://${window.location.host}:5000/` : `wss://${window.location.host}:5000/`;
+const wsURL = window.location.host.includes("localhost") ? `ws://${window.location.host}/` : `wss://${window.location.host}/`;
+console.log(`ws url ${wsURL}`)
 const socket = new WebSocket(wsURL);
+// const socket = io();
 
 async function fetchName() {
     let response = await fetch("/auth/user");
@@ -16,6 +18,19 @@ async function fetchName() {
     sessionStorage.setItem("username", data.user.name);
     return data.user.name;
 }
+
+// socket.on("connect", () => {
+//     let urlParams = new URLSearchParams(window.location.search);
+//     let create = urlParams.get('create');
+//     let join = urlParams.get('join');
+//     if (create != null && join == null) {
+//         createGame();
+//     } else if (create == null && join != null) {
+//         joinGame();
+//     } else if (create == null && join == null) {
+//         window.location = "/home";
+//     }
+//   });
 
 
 socket.onopen = () => {
@@ -30,6 +45,7 @@ socket.onopen = () => {
     } else if (create == null && join == null) {
         window.location = "/home";
     }
+    
 };
 
 async function createPlayer() {
