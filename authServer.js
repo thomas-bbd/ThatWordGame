@@ -25,12 +25,12 @@ let accessTokenStore = []; // need to be able to validate access tokens
 app.use(function (req, res, next) {
     // Website you wish to allow to connect
     
-    const origin = req.headers.origin;
-    if (validateOrigin(origin)) {
-        res.setHeader('Access-Control-Allow-Origin', origin);
-    } else {
-        console.log(`Denied request due to CORS policy from ${origin}`);
-    }
+    // const origin = req.headers.origin;
+    // if (validateOrigin(origin)) {
+    //     res.setHeader('Access-Control-Allow-Origin', origin);
+    // } else {
+    //     console.log(`Denied request due to CORS policy from ${origin}`);
+    // }
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     next();
@@ -87,8 +87,14 @@ app.post('/register', async (req,res)=>{
     {
         let db_user = await GetUserByUsernameEmail(username, email);
         if(db_user.length === 0){
-            await InsertUser(username,password,email);
-            res.sendStatus(200);
+            let userInsert = await InsertUser(username,password,email);
+            if (userInsert.name === "RequestError" && userInsert.originalError.message.includes('duplicate')) {
+                res.status(401).json({error:'Email already associated with another account'}).send();
+            } else if (userInsert.name === "RequestError") {
+                res.status(401).json({error:userInsert.originalError.message}).send();
+            } else {
+                res.sendStatus(200);
+            }
         }else{
             res.status(401).json({error:'User Already Exists'}).send();
         }
