@@ -21,7 +21,7 @@ async function VerifyLogin(username, email, password){
         }
     }
 
-    return {success: false , userID};;
+    return {success: false};
 }
 
 function generateRefreshToken(user){
