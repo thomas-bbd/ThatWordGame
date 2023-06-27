@@ -55,8 +55,8 @@ app.get('/db', (req, res) => {
     })
 });
 
-// const wss = new WebSocketServer({server: server})
-const wss = new Server(server);
+const wss = new WebSocketServer({server: server})
+// const wss = new Server(server);
 
 const handle_message = (message, websocket) => {
   console.log('handling...')
