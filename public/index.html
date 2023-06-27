@@ -28,22 +28,48 @@
     </header>
 
     <main>
-        <form id="login-form">
+        <section id="login-section">
+            <form id="login-form">
             <input type="text" name="username" id="username-field" class="login-form-field" placeholder="Username" />
             <input type="password" name="password" id="password-field" class="login-form-field" placeholder="Password">
             <input type="email" name="email" id="email-field" class="login-form-field" placeholder="Email">
 
             <input type="submit" id="login-submit" value="Login"/>
-            <p>Don't have an account? Register <a href="/public/register.html">here</a></p>
+            <p>Don't have an account? Register <button id="register-redirect">here</button></p>
           </form>
-        <ul class="provider-sign-in">
-            <p>or choose a provider to sign in with</p>
-            <li><button class="single-signin" id="start-btn" data-provider="google"><img
-                    src="images/btn_google_signin_red@2x.png" width="300"></button></li>
-            <li><button class="single-signin" id="github-btn" data-provider="github"><img
-                src="images/btn_github_signin_grey@2x.png" width="300"></button></li>
-            </ul>
-        <p id="error-message"></p>
+            <ul class="provider-sign-in">
+                <p>or choose a provider to sign in with</p>
+                <li><button class="single-signin" id="start-btn" data-provider="google"><img
+                        src="images/btn_google_signin_red@2x.png" width="300"></button></li>
+                <li><button class="single-signin" id="github-btn" data-provider="github"><img
+                    src="images/btn_github_signin_grey@2x.png" width="300"></button></li>
+                </ul>
+            <p id="error-message"></p>
+        </section>
+        <section id="register-section" style="display: none;" >
+            <aside id="card" class="animated fadeIn"  style="display: none;">
+                <section id="upper-side">
+                    <h3 id="status">Success</h3>
+                </section>
+                <section id="lower-side">
+                    <p id="message">
+                        Congratulations, your account has been successfully created.
+                    </p>
+                    <a href="#" id="contBtn">Continue</a>
+                </section>
+            </aside>
+            <form id="register-form">
+                <input type="text" name="username" id="register-username-field" class="register-form-field" placeholder="Username" />
+                <input type="email" name="email" id="register-email-field" class="register-form-field" placeholder="Email">
+                <input type="password" name="password" id="register-password-field" class="register-form-field" placeholder="Password">
+                <input type="password" name="passwordConfirm" id="register-passwordConfirm-field" class="logregisterin-form-field" placeholder="Reenter password">
+    
+                <input type="submit" id="register-submit" value="Register"/>
+              </form>
+            <p>Or go back to <button id="login-redirect">login</button></p>
+        </main>
+        </section>
+        
     </main>
 
     <script src="js/index.js" type="module"></script>

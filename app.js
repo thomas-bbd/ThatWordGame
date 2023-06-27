@@ -46,9 +46,9 @@ app.use(function(req, res, next) {
 });
 
 passport.initialize();
-
 app.use('/auth', authRouter);
 app.use('/home', express.static(__dirname + '/public'));
 app.use('/', ensureLoggedIn('/home'), express.static(__dirname + '/protected'))
+app.use('/home/public/register', express.static(__dirname + '/public/register'));
 
 export default app;
