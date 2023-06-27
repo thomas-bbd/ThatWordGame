@@ -28,24 +28,21 @@
     </header>
 
     <main>
-
         <form id="login-form">
             <input type="text" name="username" id="username-field" class="login-form-field" placeholder="Username" />
             <input type="password" name="password" id="password-field" class="login-form-field" placeholder="Password">
             <input type="email" name="email" id="email-field" class="login-form-field" placeholder="Email">
 
-            <input type="submit" id="login-submit"/>
+            <input type="submit" id="login-submit" value="Login"/>
+            <p>Don't have an account? Register <a href="/public/register.html">here</a></p>
           </form>
-        <section class="provider-sign-in">
-            <p>Choose a provider to sign in with</p>
-            <hr class="divider" />
-            <button class="single-signin" id="start-btn" data-provider="google"><img
-                    src="images/btn_google_signin_red@2x.png" width="300"></button>
-            <br />
-            <button class="single-signin" id="github-btn" data-provider="github"><img
-                src="images/btn_github_signin_grey@2x.png" width="300"></button>
-            <br />
-        </section>
+        <ul class="provider-sign-in">
+            <p>or choose a provider to sign in with</p>
+            <li><button class="single-signin" id="start-btn" data-provider="google"><img
+                    src="images/btn_google_signin_red@2x.png" width="300"></button></li>
+            <li><button class="single-signin" id="github-btn" data-provider="github"><img
+                src="images/btn_github_signin_grey@2x.png" width="300"></button></li>
+            </ul>
         <p id="error-message"></p>
     </main>
 
