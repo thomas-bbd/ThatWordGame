@@ -74,6 +74,7 @@ async function InsertUser(username, password, email){
     .query('INSERT INTO USERS(username, password, email) VALUES (@username, @password, @email)');
     return result.recordset;
   }catch(error){
+    console.log(`Error while inserting user ${username} into the users table. Error: ${error}`);
     return error;
   }
 }

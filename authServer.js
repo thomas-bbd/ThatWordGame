@@ -77,9 +77,11 @@ app.post('/login', async (req,res)=>{
 
 
 app.post('/register', async (req,res)=>{
+    
     let username = req.body.username;
     let password = req.body.password;
     let email = req.body.email;
+    console.log(`Registration attempt for ${username} ${email}`);
     const registrationInputValid = validateRegistrationInput(username,email,password);
     if(registrationInputValid.value)
     {
