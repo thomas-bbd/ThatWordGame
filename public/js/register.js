@@ -1,6 +1,6 @@
-const loginButton = document.getElementById("register-submit");
+const registerButton = document.getElementById("register-submit");
 const contBtn = document.getElementById("contBtn");
-const loginForm = document.getElementById("register-form");
+const registerForm = document.getElementById("register-form");
 const successCard = document.getElementById("card");
 
 
@@ -8,7 +8,7 @@ contBtn.addEventListener("click", (e) => {
     window.location = "/public/index.html"
 });
 
-loginButton.addEventListener("click", (e) => {
+registerButton.addEventListener("click", (e) => {
     e.preventDefault();
     disableAllInputs();
     register();
@@ -16,10 +16,10 @@ loginButton.addEventListener("click", (e) => {
 
 async function register() {
     disableAllInputs();
-    let username = loginForm.username.value;
-    let password = loginForm.password.value;
-    let passwordConfirm = loginForm.passwordConfirm.value;
-    let email = loginForm.email.value;
+    let username = registerForm.username.value;
+    let password = registerForm.password.value;
+    let passwordConfirm = registerForm.passwordConfirm.value;
+    let email = registerForm.email.value;
     let body = {
         username: username,
         email: email,
