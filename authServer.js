@@ -31,6 +31,7 @@ app.use(function (req, res, next) {
     // } else {
     //     console.log(`Denied request due to CORS policy from ${origin}`);
     // }
+    res.setHeader('Access-Control-Allow-Origin', 'origin');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     next();
