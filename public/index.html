@@ -22,20 +22,42 @@
 
 <body class="v-container-vh">
 
-    <header>
-        <img src="images/logo.png" alt="logo">
-        <h1 id="name-heading"> Welcome to <br /> That Word Game</h1>
+    <header class="v-container-vh">
+        <img src="images/pencil.png" alt="logo">
+        <h1 id="name-heading" class="heading-text"> Welcome to <br /> That Word Game</h1>
     </header>
 
     <main>
         <section id="login-section">
             <form id="login-form">
-            <input type="text" name="username" id="username-field" class="login-form-field" placeholder="Username" />
-            <input type="password" name="password" id="password-field" class="login-form-field" placeholder="Password">
-            <input type="email" name="email" id="email-field" class="login-form-field" placeholder="Email">
-
-            <input type="submit" id="login-submit" value="Login"/>
-            <p>Don't have an account? Register <button id="register-redirect">here</button></p>
+            <input 
+              type="text" 
+              name="username" 
+              id="username-field" 
+              class="login-form-field" 
+              placeholder="Username"
+            />
+            <input 
+              type="password" 
+              name="password" 
+              id="password-field" 
+              class="login-form-field" 
+              placeholder="Password"
+            />
+            <input 
+              type="email" 
+              name="email" 
+              id="email-field" 
+              class="login-form-field" 
+              placeholder="Email"
+            />
+            <input 
+              type="submit" 
+              id="login-submit" 
+              value="Login"
+              class="login-button"
+            />
+            <p class="register-prompt">Don't have an account? Register <button id="register-redirect">here</button></p>
           </form>
             <ul class="provider-sign-in">
                 <p>or choose a provider to sign in with</p>

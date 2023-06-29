@@ -110,6 +110,13 @@ body {
   place-items: center;
 }
 
+.heading-text {
+  margin-top: 3vh;
+  margin-bottom: 5vh;
+  text-align: center;
+  justify-content: center;
+}
+
 .scrollable {
   overflow-y: scroll;
   flex: 1 1 0;
@@ -155,11 +162,58 @@ li {
 button {
   background-color: rgb(54, 102, 100);
   border: none;
+  cursor: pointer;
 }
 
-header .logo {
+header img {
   width: 20vw;
   min-width: 10vh;
   max-width: 20vh;
   height: auto;
 }
+
+.login-form-field {
+  width: 100%;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border: 0.1rem solid #ccc;
+  border-radius: 1rem;
+}
+
+.login-button {
+  padding: 1rem 2rem;
+  background-color: var(--orange);
+  color: var(--white);
+  border: none;
+  border-radius: 0.3rem;
+  cursor: pointer;
+}
+
+.login-button:hover {
+  background-color: var(--highlight-color);
+}
+
+.register-prompt {
+  margin-top: 1rem;
+}
+
+.register-prompt button {
+  background: none;
+  border: none;
+  color: var(--orange);
+  text-decoration: underline;
+}
+
+/* Styles for register prompt */
+/* .register-prompt {
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.register-prompt button {
+  background: none;
+  border: none;
+  color: blue;
+  text-decoration: underline;
+  cursor: pointer;
+} */
