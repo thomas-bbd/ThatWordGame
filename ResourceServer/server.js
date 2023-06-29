@@ -1,4 +1,5 @@
 import { WebSocketServer } from "ws";
+import { Server } from "socket.io";
 import { testDb } from "./game.js";
 import { config } from "dotenv";
 import app from "../app.js";
@@ -77,8 +78,9 @@ const handle_message = (message, websocket) => {
   }
 };
 
-wss.on("connection", (ws) => {
+wss.on("connection", (ws, req) => {
   console.log("new connection created");
+  // console.log(req.url)
   ws.on("message", (msg) => handle_message(JSON.parse(msg), ws));
 });
 

@@ -45,23 +45,44 @@
       <h1>That Word Game</h1>
     </header>
 
-    <main class="v-container-vh">
-      <p>Choose a provider to sign in with</p>
-      <hr class="divider" />
-      <button class="single-signin" id="start-btn" data-provider="google">
-        <img
-          src="images/btn_google_signin_light_normal_web@2x.png"
-          width="300"
+    <main>
+      <form id="login-form">
+        <input
+          type="text"
+          name="username"
+          id="username-field"
+          class="login-form-field"
+          placeholder="Username"
         />
-      </button>
-      <br />
-      <button class="single-signin" id="github-btn" data-provider="github">
-        <img
-          src="images/btn_github_signin_light_normal_web@2x.png"
-          width="300"
+        <input
+          type="password"
+          name="password"
+          id="password-field"
+          class="login-form-field"
+          placeholder="Password"
         />
-      </button>
-      <br />
+        <input
+          type="email"
+          name="email"
+          id="email-field"
+          class="login-form-field"
+          placeholder="Email"
+        />
+
+        <input type="submit" id="login-submit" />
+      </form>
+      <section class="provider-sign-in">
+        <p>Choose a provider to sign in with</p>
+        <hr class="divider" />
+        <button class="single-signin" id="start-btn" data-provider="google">
+          <img src="images/btn_google_signin_red@2x.png" width="300" />
+        </button>
+        <br />
+        <button class="single-signin" id="github-btn" data-provider="github">
+          <img src="images/btn_github_signin_grey@2x.png" width="300" />
+        </button>
+        <br />
+      </section>
       <p id="error-message"></p>
     </main>
 
