@@ -8,14 +8,6 @@ import {
 import GitHubStrategy from "passport-github2";
 import passportCustom from "passport-custom";
 import fs from "fs";
-import dotenv from "dotenv";
-const envFile = fs.readFileSync("config.env");
-const envConfig = dotenv.parse(envFile);
-
-for (const key in envConfig) {
-  process.env[key] = envConfig[key];
-}
-
 const CustomStrategy = passportCustom.Strategy;
 
 passport.use(
