@@ -135,6 +135,11 @@ form {
   padding: 0px 0px 5px 5px;
 }
 
+li {
+  text-decoration: none;
+  list-style: none;
+}
+
 #login-form-submit {
   width: 100%;
   padding: 7px;
