@@ -1,14 +1,12 @@
 :root {
-  --bg-protected: #bde3ff;
-  --bg-public: #fce5c5;
-
   --color-txt: #0f0f0f;
   --filled-color: #fff;
   --empty-bg: #fff;
+  --light-bg: #fff;
   --highlight-color: #d0d0ff;
 
   --white: #fff;
-  --orange: #f24822;
+  --orange: #ff471e;
   --black: #000;
 
   --logo-size: 70vw;
@@ -23,6 +21,15 @@
   --font-size: 1.5rem;
   --font-size-lg: 2rem;
   --font-size-xl: 3rem;
+
+  --primary-color: #f0cc59;
+  --secondary-color: #4158f0;
+  --tertiary-color: #71f08e;
+  --fourth-color: #596df0;
+
+  --shadow-color: #ccc;
+
+  --light-text: #3a3a3a;
 
   line-height: 1;
   font-weight: 400;
@@ -83,10 +90,6 @@
   justify-content: center;
 }
 
-input {
-  color: var(--empty-bg);
-}
-
 p {
   font-size: small;
 }
@@ -99,15 +102,24 @@ a {
 
 a:hover,
 a:visited {
-  color: rgba(255, 240, 200, 0.9);
+  color: var(--highlight-color);
 }
 
 body {
+  background-color: var(--primary-color);
   height: 100%;
   margin: 0;
   font-family: Arial, Helvetica, sans-serif;
   display: flex;
   place-items: center;
+}
+
+main {
+  width: 70vw;
+  min-width: 25vw;
+  max-width: 30vh;
+  align-items: center;
+  justify-content: center;
 }
 
 .heading-text {
@@ -129,17 +141,17 @@ form {
   align-items: center;
 }
 
-.login-form-field::placeholder {
-  color: #3a3a3a;
+input::placeholder {
+  color: var(--light-text);
 }
 
-.login-form-field {
-  border: none;
-  border-bottom: 1px solid #3a3a3a;
+input {
+  border: 1px solid var(--shadow-color);
   margin-bottom: 10px;
   border-radius: 3px;
   outline: none;
   padding: 0px 0px 5px 5px;
+  background-color: #f3e6ba;
 }
 
 li {
@@ -147,20 +159,8 @@ li {
   list-style: none;
 }
 
-#login-form-submit {
-  width: 100%;
-  padding: 7px;
-  border: none;
-  border-radius: 5px;
-  color: white;
-  font-weight: bold;
-  background-color: #3a3a3a;
-  cursor: pointer;
-  outline: none;
-}
-
 button {
-  background-color: rgb(54, 102, 100);
+  background-color: var(--orange);
   border: none;
   cursor: pointer;
 }
@@ -172,48 +172,86 @@ header img {
   height: auto;
 }
 
-.login-form-field {
+input {
   width: 100%;
   padding: 1rem;
   margin-bottom: 1rem;
-  border: 0.1rem solid #ccc;
+  border: 0.1rem solid var(--shadow-color);
   border-radius: 1rem;
 }
 
-.login-button {
+.input-button {
   padding: 1rem 2rem;
   background-color: var(--orange);
   color: var(--white);
   border: none;
-  border-radius: 0.3rem;
   cursor: pointer;
 }
 
-.login-button:hover {
-  background-color: var(--highlight-color);
+.input-button:hover {
+  background-color: var(--fourth-color);
 }
 
-.register-prompt {
+.redirect-prompt {
   margin-top: 1rem;
 }
 
-.register-prompt button {
+.redirect-prompt button {
   background: none;
   border: none;
   color: var(--orange);
   text-decoration: underline;
 }
 
-/* Styles for register prompt */
-/* .register-prompt {
-  margin-top: 10px;
-  font-size: 14px;
+.provider-sign-in {
+  padding: 0;
+  margin: 0;
 }
 
-.register-prompt button {
-  background: none;
+.provider-sign-in p {
+  margin-bottom: 1em;
+}
+
+.provider-sign-in li {
+  margin-top: 1rem;
+}
+
+.single-signin {
+  width: 100%;
+  height: 3rem;
+  padding: 0.75rem 1.5rem;
   border: none;
-  color: blue;
-  text-decoration: underline;
-  cursor: pointer;
-} */
+  border-radius: 1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.single-signin img {
+  height: 2rem;
+  width: auto;
+  margin-right: 10px;
+}
+
+.single-signin i {
+  font-size: 1.5rem;
+  margin-right: 10px;
+}
+
+.single-signin.github {
+  background-color: #24292e;
+}
+
+.single-signin.google {
+  background-color: #f36e62;
+}
+
+.page.register-section {
+  display: none;
+}
+
+.register-success {
+  display: none;
+}

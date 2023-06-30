@@ -39,55 +39,71 @@
     <meta name="theme-color" content="#e0eff4" />
   </head>
 
-  <body class="container-vh">
-    <nav>
-      <ul class="container-h">
+  <body class="v-container-vh">
+    <nav id="nav-bar" class="container">
+      <ul class="nav-list container">
         <li><a class="nav back" id="nav-back-btn">Back</a></li>
         <li><a class="nav finish" id="nav-finish-btn">Finish</a></li>
       </ul>
     </nav>
-    <header>
+
+    <header class="v-container-vh">
       <img src="/images/pencil.png" alt="logo" class="logo" />
       <h1><span id="username-heading">User</span>'s Dashboard</h1>
     </header>
-    <main>
-      <section class="page dashboard-screen">
+
+    <hr />
+
+    <main class="v-container-h">
+      <section id="dashboard-page" class="page dashboard-screen">
         <section class="dashboard-section">
           <h2>Join Game</h2>
           <form>
-            <label for="gameID">Game ID:</label>
             <input
               type="text"
               id="gameID"
               name="gameID"
               placeholder="Enter a valid Game ID..."
             />
-            <button type="submit" class="btn">Join Game</button>
+
+            <button
+              id="join-game-button"
+              type="button"
+              class="dashboard-button"
+            >
+              Join Game
+            </button>
           </form>
         </section>
 
         <section class="dashboard-section">
           <h2>Create A Game</h2>
-          <button type="button" class="btn">Create A Game</button>
+          <button
+            type="button"
+            id="create-game-button"
+            class="dashboard-button"
+          >
+            Create A Game
+          </button>
         </section>
 
         <section class="dashboard-section">
           <h2>Past Games</h2>
-          <table>
+          <table class="past-games-table">
             <thead>
-              <tr>
+              <tr class="past-games table-heading">
                 <th>Opponent</th>
                 <th>String Length</th>
                 <th>Time Taken</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
+            <tbody class="past-games table-body">
+              <tr class="past-games-table-row">
                 <td>UserBar</td>
                 <td>10 words</td>
                 <td>37 seconds</td>
               </tr>
-              <tr>
+              <tr class="past-games-table-row">
                 <td>FooUser</td>
                 <td>10 words</td>
                 <td>37 seconds</td>
@@ -97,11 +113,11 @@
         </section>
       </section>
 
-      <section class="page game-screen">
-        <section class="convo-section">
-          <ul>
-            <li>
-              <article class="game-message friendly">
+      <section id="game-screen-pages" class="page game-screen">
+        <section id="convo-section" class="convo-section">
+          <ul id="message-list">
+            <li class="game-message friendly">
+              <article class="article">
                 <p>Lorem ipsum dolor</p>
                 <img
                   src="./images/green-player.png"
@@ -109,18 +125,23 @@
                 />
               </article>
             </li>
-            <li>
-              <article class="game-message enemy">
-                <p>Lorem ipsum dolor sit,</p>
+            <li class="game-message opponent">
+              <article class="message">
                 <img src="./images/yellow-player.png" alt="Enemy player icon" />
+                <p>Lorem ipsum dolor sit,</p>
               </article>
             </li>
           </ul>
         </section>
+
         <section class="message-section">
           <form>
-            <input type="text" placeholder="Type a new message..." />
-            <button type="submit">
+            <input
+              id="message-input"
+              type="text"
+              placeholder="Type a new message..."
+            />
+            <button id="send-message-button" type="button">
               <img
                 src="./images/send.png"
                 alt="Send message button"
@@ -129,7 +150,7 @@
               <img
                 src="./images/soon.png"
                 alt="Button saying that it's your turn soon"
-                class="disabled-image"
+                class="disabled-image hidden"
               />
             </button>
           </form>
@@ -138,9 +159,96 @@
     </main>
 
     <script>
-      function goTo(url) {
-        window.location = url;
-      }
+      document.addEventListener("DOMContentLoaded", function () {
+        function toggleHideUnhide(hiddenElements, unhiddenElements) {
+          if (hiddenElements)
+            hiddenElements.map((element) => {
+              if (!element.classList.contains("hidden"))
+                element.classList.add("hidden");
+            });
+
+          if (unhiddenElements)
+            unhiddenElements.map((element) => {
+              if (!element.classList !== null) element.classList.add("hidden");
+              else if (!element.classList.contains("hidden"))
+                element.classList.add("hidden");
+            });
+        }
+        function createMessageElement(messageString, isFriendly) {
+          const ul = document.createElement("ul");
+          const li = document.createElement("li");
+          const article = document.createElement("article");
+          const img = document.createElement("img");
+          const p = document.createElement("p");
+
+          li.classList.add("game-message");
+          if (isFriendly) {
+            li.classList.add("friendly");
+            article.classList.add("article");
+            img.src = "./images/green-player.png";
+            img.alt = "Friendly player icon";
+          } else {
+            li.classList.add("opponent");
+            article.classList.add("message");
+            img.src = "./images/yellow-player.png";
+            img.alt = "Enemy player icon";
+          }
+
+          p.textContent = messageString;
+
+          article.appendChild(p);
+          if (isFriendly) {
+            article.appendChild(img);
+          } else {
+            article.insertBefore(img, p);
+          }
+
+          li.appendChild(article);
+          ul.appendChild(li);
+
+          return ul;
+        }
+
+        const responses = [
+          "Lorem",
+          "ipsum",
+          "dolor",
+          "sit",
+          "amet,",
+          "consectetur",
+          "adipiscing",
+          "elit.",
+        ];
+
+        const createGameButton = document.getElementById("create-game-button");
+        const headerUsernameText = document.getElementById("username-heading");
+        const dashboardScreen = document.getElementById("dashboard-page");
+        const gameScreen = document.getElementById("game-screen-page");
+        const navBar = document.getElementById("nav-bar");
+        const sendMessageButton = document.getElementById(
+          "send-message-button"
+        );
+        const messageInput = document.getElementById("message-input");
+
+        sendMessageButton.addEventListener("click", function () {
+          const friendlyMessageElement = createMessageElement(
+            messageInput.value,
+            true
+          );
+          const convoSection = document.getElementById("convo-section");
+          convoSection.appendChild(friendlyMessageElement);
+          messageInput.value = "";
+        });
+
+        createGameButton.addEventListener("click", () =>
+          toggleHideUnhide([dashboardScreen], [gameScreen, navBar])
+        );
+
+        joinGameButton.addEventListener("click", () => {
+          debugger;
+          toggleHideUnhide([dashboardScreen], [gameScreen, navBar]);
+        });
+      });
     </script>
   </body>
 </html>

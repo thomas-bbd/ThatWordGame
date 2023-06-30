@@ -32,8 +32,6 @@ process.on("unhandledRejection", (err) => {
   });
 });
 
-app.get("game/init");
-
 app.get("/", (req, res) => {
   res.sendFile("index.html", {
     root: path.join(__dirname, "../protected/index.html"),

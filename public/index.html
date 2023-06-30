@@ -1,100 +1,183 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>That Word Game</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css" />
 
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="images/favicon/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="images/favicon/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="images/favicon/favicon-16x16.png"
+    />
+    <link rel="icon" type="image/png" href="images/github.png" />
+    <link rel="icon" type="image/png" href="images/google-logo.png" />
+    <link rel="manifest" href="images/favicon/site.webmanifest" />
+    <link
+      rel="mask-icon"
+      href="images/favicon/safari-pinned-tab.svg"
+      color="#e0eff4"
+    />
+    <link rel="shortcut icon" href="images/favicon/favicon.ico" />
+    <meta name="msapplication-TileColor" content="#e0eff4" />
+    <meta
+      name="msapplication-config"
+      content="images/favicon/browserconfig.xml"
+    />
+    <meta name="theme-color" content="#e0eff4" />
+  </head>
 
-    <link rel="apple-touch-icon" sizes="180x180" href="images/favicon/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon/favicon-16x16.png">
-    <link rel="manifest" href="images/favicon/site.webmanifest">
-    <link rel="mask-icon" href="images/favicon/safari-pinned-tab.svg" color="#e0eff4">
-    <link rel="shortcut icon" href="images/favicon/favicon.ico">
-    <meta name="msapplication-TileColor" content="#e0eff4">
-    <meta name="msapplication-config" content="images/favicon/browserconfig.xml">
-    <meta name="theme-color" content="#e0eff4">
-</head>
-
-<body class="v-container-vh">
-
+  <body class="v-container-vh">
     <header class="v-container-vh">
-        <img src="images/pencil.png" alt="logo">
-        <h1 id="name-heading" class="heading-text"> Welcome to <br /> That Word Game</h1>
+      <img src="images/pencil.png" alt="logo" width="100" />
+      <h1 id="name-heading" class="heading-text">
+        Welcome to <br />
+        That Word Game
+      </h1>
     </header>
 
     <main>
-        <section id="login-section">
-            <form id="login-form">
-            <input 
-              type="text" 
-              name="username" 
-              id="username-field" 
-              class="login-form-field" 
-              placeholder="Username"
-            />
-            <input 
-              type="password" 
-              name="password" 
-              id="password-field" 
-              class="login-form-field" 
-              placeholder="Password"
-            />
-            <input 
-              type="email" 
-              name="email" 
-              id="email-field" 
-              class="login-form-field" 
-              placeholder="Email"
-            />
-            <input 
-              type="submit" 
-              id="login-submit" 
-              value="Login"
-              class="login-button"
-            />
-            <p class="register-prompt">Don't have an account? Register <button id="register-redirect">here</button></p>
-          </form>
-            <ul class="provider-sign-in">
-                <p>or choose a provider to sign in with</p>
-                <li><button class="single-signin" id="start-btn" data-provider="google"><img
-                        src="images/btn_google_signin_red@2x.png" width="300"></button></li>
-                <li><button class="single-signin" id="github-btn" data-provider="github"><img
-                    src="images/btn_github_signin_grey@2x.png" width="300"></button></li>
-                </ul>
-            <p id="error-message"></p>
-        </section>
-        <section id="register-section" style="display: none;" >
-            <aside id="card" class="animated fadeIn"  style="display: none;">
-                <section id="upper-side">
-                    <h3 id="status">Success</h3>
-                </section>
-                <section id="lower-side">
-                    <p id="message">
-                        Congratulations, your account has been successfully created.
-                    </p>
-                    <a href="#" id="contBtn">Continue</a>
-                </section>
-            </aside>
-            <form id="register-form">
-                <input type="text" name="username" id="register-username-field" class="register-form-field" placeholder="Username" />
-                <input type="email" name="email" id="register-email-field" class="register-form-field" placeholder="Email">
-                <input type="password" name="password" id="register-password-field" class="register-form-field" placeholder="Password">
-                <input type="password" name="passwordConfirm" id="register-passwordConfirm-field" class="logregisterin-form-field" placeholder="Reenter password">
-    
-                <input type="submit" id="register-submit" value="Register"/>
-              </form>
-            <p>Or go back to <button id="login-redirect">login</button></p>
-        </main>
-        </section>
-        
+      <section id="login-section">
+        <form id="login-form">
+          <input
+            type="text"
+            name="username"
+            id="username-field"
+            placeholder="Username"
+          />
+          <input
+            type="password"
+            name="password"
+            id="password-field"
+            placeholder="Password"
+          />
+          <input
+            type="email"
+            name="email"
+            id="email-field"
+            placeholder="Email"
+          />
+          <input
+            type="submit"
+            id="login-submit"
+            value="Login"
+            class="input-button"
+          />
+          <p class="redirect-prompt">
+            Don't have an account? Register
+            <span
+              ><button
+                type="button"
+                id="register-redirect"
+                class="redirect-button"
+              >
+                here
+              </button></span
+            >
+          </p>
+        </form>
+        <p>or choose a provider to sign in with</p>
+        <ul class="provider-sign-in">
+          <li>
+            <button
+              type="button"
+              class="single-signin google"
+              id="start-btn"
+              data-provider="google"
+            >
+              <img src="images/google-logo.png" alt="Google icon" /> Continue
+              with Google
+            </button>
+          </li>
+          <li>
+            <button
+              type="button"
+              class="single-signin github"
+              id="github-btn"
+              data-provider="github"
+            >
+              <img src="images/github.png" alt="Github icon" /> Continue with
+              Github
+            </button>
+          </li>
+        </ul>
+        <p id="error-message"></p>
+      </section>
+
+      <section id="register-section" class="page register-section">
+        <aside id="card" class="animated fadeIn register-success">
+          <section id="upper-side">
+            <h3 id="status">Success</h3>
+          </section>
+          <section id="lower-side">
+            <p id="message">
+              Congratulations, your account has been successfully created.
+            </p>
+            <a href="#" id="contBtn">Continue</a>
+          </section>
+        </aside>
+        <form id="register-form">
+          <input
+            type="text"
+            name="username"
+            id="register-username-field"
+            placeholder="Username"
+          />
+          <input
+            type="email"
+            name="email"
+            id="register-email-field"
+            placeholder="Email"
+          />
+          <input
+            type="password"
+            name="password"
+            id="register-password-field"
+            placeholder="Password"
+          />
+          <input
+            type="password"
+            name="passwordConfirm"
+            id="register-passwordConfirm-field"
+            class="logregisterin-form-field"
+            placeholder="Reenter password"
+          />
+
+          <input
+            type="submit"
+            id="register-submit"
+            value="Register"
+            class="input-button"
+          />
+          <p class="redirect-prompt">
+            Or go back to<span
+              ><button
+                type="button"
+                class="redirect-button"
+                id="login-redirect"
+              >
+                login
+              </button></span
+            >
+          </p>
+        </form>
+      </section>
     </main>
 
     <script src="js/index.js" type="module"></script>
-</body>
-
+  </body>
 </html>
